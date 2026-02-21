@@ -1,24 +1,40 @@
-{% extends 'base.html' %} {% block titulo %}{{ liga.nombre }} - FútbolTube{%
-endblock %} {% block contenido %}
+﻿{% extends 'base.html' %}
+
+{% block titulo %}{{ liga.nombre }} - FutbolTube{% endblock %}
+
+{% block contenido %}
 <div class="d-flex align-items-center gap-3 mb-4">
-  {% if liga.logo %}
-  <img
-    src="{{ liga.logo.url }}"
-    alt="{{ liga.nombre }}"
-    style="width: 60px; height: 60px; border-radius: 50%; object-fit: cover"
-  />
-  {% endif %}
-  <div>
-    <h4 class="mb-0">{{ liga.nombre }}</h4>
-    {% if liga.pais %}
-    <span class="text-muted">{{ liga.pais }}</span>
+    {% if liga.logo %}
+    <img src="{{ liga.logo.url }}" alt="{{ liga.nombre }}" style="width: 60px; height: 60px; border-radius: 50%; object-fit: cover;">
     {% endif %}
-  </div>
+    <div>
+        <h4 class="mb-0">{{ liga.nombre }}</h4>
+        {% if liga.pais %}
+        <span class="text-muted">{{ liga.pais }}</span>
+        {% endif %}
+    </div>
 </div>
 
 <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-3">
-  {% for video in videos %} {% include 'includes/video_card.html' %} {% empty %}
-  <p class="text-muted">No hay videos para esta liga todavía.</p>
-  {% endfor %}
+    {% for video in videos %}
+    <div class="col">
+        <a href="{% url 'canales:detalle_video' video.pk %}">
+            <div class="card card-video position-relative">
+                {% if video.thumbnail_url %}
+                <img src="{{ video.thumbnail_url }}" alt="{{ video.titulo }}">
+                {% endif %}
+                <div class="card-body">
+                    <h6 class="card-title">{{ video.titulo }}</h6>
+                    <p class="card-text mb-1">
+                        <span class="badge badge-canal">{{ video.canal.nombre }}</span>
+                    </p>
+                    <p class="card-text">{{ video.fecha_publicacion|timesince }}</p>
+                </div>
+            </div>
+        </a>
+    </div>
+    {% empty %}
+    <p class="text-muted">No hay videos para esta liga todavia.</p>
+    {% endfor %}
 </div>
 {% endblock %}

@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-fcp_u5k@k(8r2vgtn69n#=1-ukc=b0cfy9b4w$v9an96=@$^xt
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -127,3 +127,9 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 # Cambiar idioma a español (opcional pero queda bien)
 LANGUAGE_CODE = 'es-mx'
 TIME_ZONE = 'America/Mexico_City'
+
+STATIC_URL = '/static/'
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'static'),
+]
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
