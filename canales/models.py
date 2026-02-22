@@ -7,7 +7,7 @@ from django.db import models
 class Liga(models.Model):
     nombre = models.CharField(max_length=100)  # Liga MX, Premier League...
     slug = models.SlugField(unique=True)
-    logo = models.ImageField(upload_to='ligas/', blank=True, null=True)
+    logo = models.FileField(upload_to='ligas/', blank=True, null=True)
     pais = models.CharField(max_length=50, blank=True)
     activa = models.BooleanField(default=True)
 
@@ -22,7 +22,7 @@ class Liga(models.Model):
 class Canal(models.Model):
     nombre = models.CharField(max_length=100)  # ESPN, Fox Sports, TUDN...
     slug = models.SlugField(unique=True)
-    logo = models.ImageField(upload_to='canales/', blank=True, null=True)
+    logo = models.FileField(upload_to='canales/', blank=True, null=True)
     url_sitio = models.URLField(blank=True, help_text='Link al sitio oficial del canal')
     descripcion = models.TextField(blank=True)
     activo = models.BooleanField(default=True)
@@ -52,8 +52,7 @@ class Video(models.Model):
     liga = models.ForeignKey(Liga, on_delete=models.SET_NULL,
                              null=True, blank=True, related_name='videos')
     descripcion = models.TextField(blank=True)
-    thumbnail_custom = models.ImageField(upload_to='thumbnails/', blank=True, null=True,
-                                         help_text='Thumbnail personalizado (para videos no YouTube)')
+    thumbnail_custom = models.FileField(upload_to='thumbnails/', blank=True, null=True, help_text='Thumbnail personalizado (para videos no YouTube)')
     fecha_publicacion = models.DateTimeField(auto_now_add=True)
     destacado = models.BooleanField(default=False)
     activo = models.BooleanField(default=True)
@@ -97,3 +96,39 @@ class Video(models.Model):
         if self.tipo == 'youtube' and self.youtube_id:
             return f'https://www.youtube.com/embed/{self.youtube_id}'
         return self.url_video
+
+class EnlaceVideo(models.Model):
+    TIPO_CHOICES = [
+        ('youtube', 'YouTube'),
+        ('url_directa', 'URL Directa (MP4/M3U8)'),
+        ('iframe', 'iFrame Personalizado'),
+    ]
+
+    video = models.ForeignKey(Video, on_delete=models.CASCADE, related_name='enlaces')
+    nombre = models.CharField(max_length=100, help_text='Ej: Opcion 1, ESPN HD, Fox Sports')
+    tipo = models.CharField(max_length=20, choices=TIPO_CHOICES, default='iframe')
+    url = models.URLField()
+    activo = models.BooleanField(default=True)
+    orden = models.PositiveIntegerField(default=0)
+
+    class Meta:
+        ordering = ['orden']
+        verbose_name = 'Enlace'
+        verbose_name_plural = 'Enlaces'
+
+    def __str__(self):
+        return f"{self.nombre} - {self.video.titulo}"
+
+    @property
+    def youtube_id(self):
+        if self.tipo == 'youtube':
+            return Video.extraer_youtube_id(self.url)
+        return ''
+
+    @property
+    def embed_url(self):
+        if self.tipo == 'youtube':
+            yt_id = self.youtube_id
+            if yt_id:
+                return f'https://www.youtube.com/embed/{yt_id}'
+        return self.url

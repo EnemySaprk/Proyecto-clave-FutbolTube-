@@ -6,33 +6,31 @@
 <div class="row">
     <div class="col-lg-8">
 
-        {% if video.tipo == 'youtube' %}
-        <div class="ratio ratio-16x9 mb-3" style="border-radius: 12px; overflow: hidden;">
+        <div id="reproductor" class="ratio ratio-16x9 mb-3" style="border-radius: 12px; overflow: hidden; background: #000;">
+            {% if video.tipo == 'youtube' %}
             <iframe src="{{ video.embed_url }}" allowfullscreen></iframe>
-        </div>
-
-        {% elif video.tipo == 'url_directa' %}
-        <div class="ratio ratio-16x9 mb-3" style="border-radius: 12px; overflow: hidden; background: #000;">
+            {% elif video.tipo == 'url_directa' %}
             <video controls autoplay>
                 <source src="{{ video.url_video }}" type="video/mp4">
             </video>
+            {% elif video.tipo == 'iframe' %}
+            <iframe src="{{ video.url_video }}" allowfullscreen allow="encrypted-media" sandbox="allow-scripts allow-same-origin allow-presentation" referrerpolicy="no-referrer"></iframe>
+            {% endif %}
         </div>
 
-        {% elif video.tipo == 'iframe' %}
-        <div class="ratio ratio-16x9 mb-3" style="border-radius: 12px; overflow: hidden; position: relative;">
-            <iframe src="{{ video.url_video }}" allowfullscreen
-                    allow="encrypted-media"
-                    sandbox="allow-scripts allow-same-origin allow-presentation"
-                    referrerpolicy="no-referrer"></iframe>
-            <div id="ad-blocker" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 10; background: transparent;" onclick="this.style.display='none'"></div>
-        </div>
-        <div class="d-flex gap-2 mb-3">
-            <button onclick="document.getElementById('ad-blocker').style.display='block'" class="btn btn-sm" style="background-color: #00d4aa; color: #0f0f0f;">
-                <i class="bi bi-shield-check"></i> Reactivar bloqueo
+        {% if video.enlaces.all %}
+        <div class="d-flex flex-wrap gap-2 mb-3">
+            <span class="text-muted" style="line-height: 2;">Opciones:</span>
+            <button class="btn btn-sm btn-option active" style="background-color: #00d4aa; color: #0f0f0f;" onclick="cambiarVideo('{{ video.embed_url }}', '{{ video.tipo }}', this)">
+                <i class="bi bi-play-circle"></i> Principal
             </button>
-            <a href="{{ video.url_video }}" target="_blank" class="btn btn-sm" style="background-color: #e94560; color: white;">
-                <i class="bi bi-box-arrow-up-right"></i> Abrir en ventana nueva
-            </a>
+            {% for enlace in video.enlaces.all %}
+            {% if enlace.activo %}
+            <button class="btn btn-sm btn-option" style="background-color: #333; color: #f1f1f1;" onclick="cambiarVideo('{{ enlace.embed_url }}', '{{ enlace.tipo }}', this)">
+                <i class="bi bi-play-circle"></i> {{ enlace.nombre }}
+            </button>
+            {% endif %}
+            {% endfor %}
         </div>
         {% endif %}
 
@@ -68,4 +66,26 @@
         {% endfor %}
     </div>
 </div>
+
+<script>
+function cambiarVideo(url, tipo, btn) {
+    var reproductor = document.getElementById('reproductor');
+    if (tipo === 'youtube') {
+        reproductor.innerHTML = '<iframe src="' + url + '" allowfullscreen></iframe>';
+    } else if (tipo === 'url_directa') {
+        reproductor.innerHTML = '<video controls autoplay><source src="' + url + '" type="video/mp4"></video>';
+    } else {
+        reproductor.innerHTML = '<iframe src="' + url + '" allowfullscreen allow="encrypted-media" sandbox="allow-scripts allow-same-origin allow-presentation" referrerpolicy="no-referrer"></iframe>';
+    }
+    var botones = document.querySelectorAll('.btn-option');
+    botones.forEach(function(b) {
+        b.style.backgroundColor = '#333';
+        b.style.color = '#f1f1f1';
+        b.classList.remove('active');
+    });
+    btn.style.backgroundColor = '#00d4aa';
+    btn.style.color = '#0f0f0f';
+    btn.classList.add('active');
+}
+</script>
 {% endblock %}

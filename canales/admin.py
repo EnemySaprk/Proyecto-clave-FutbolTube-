@@ -1,5 +1,10 @@
 from django.contrib import admin
-from .models import Liga, Canal, Video
+from .models import Liga, Canal, Video, EnlaceVideo
+
+
+class EnlaceVideoInline(admin.TabularInline):
+    model = EnlaceVideo
+    extra = 1
 
 
 @admin.register(Liga)
@@ -23,3 +28,4 @@ class VideoAdmin(admin.ModelAdmin):
     list_filter = ['canal', 'liga', 'destacado', 'activo']
     search_fields = ['titulo', 'descripcion']
     list_editable = ['destacado']
+    inlines = [EnlaceVideoInline]
