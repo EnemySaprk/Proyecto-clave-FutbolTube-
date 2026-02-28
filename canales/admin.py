@@ -24,8 +24,9 @@ class CanalAdmin(admin.ModelAdmin):
 
 @admin.register(Video)
 class VideoAdmin(admin.ModelAdmin):
-    list_display = ['titulo', 'canal', 'liga', 'destacado', 'fecha_publicacion']
-    list_filter = ['canal', 'liga', 'destacado', 'activo']
+    list_display = ['titulo', 'canal', 'destacado', 'fecha_publicacion']
+    list_filter = ['canal', 'ligas', 'destacado', 'activo']
     search_fields = ['titulo', 'descripcion']
     list_editable = ['destacado']
+    filter_horizontal = ['ligas']
     inlines = [EnlaceVideoInline]

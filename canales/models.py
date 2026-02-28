@@ -49,8 +49,7 @@ class Video(models.Model):
     youtube_id = models.CharField(max_length=20, blank=True,
                                   help_text='Se extrae automáticamente si es YouTube')
     canal = models.ForeignKey(Canal, on_delete=models.CASCADE, related_name='videos')
-    liga = models.ForeignKey(Liga, on_delete=models.SET_NULL,
-                             null=True, blank=True, related_name='videos')
+    ligas = models.ManyToManyField(Liga, blank=True, related_name='videos')
     descripcion = models.TextField(blank=True)
     thumbnail_custom = models.FileField(upload_to='thumbnails/', blank=True, null=True, help_text='Thumbnail personalizado (para videos no YouTube)')
     fecha_publicacion = models.DateTimeField(auto_now_add=True)

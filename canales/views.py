@@ -16,9 +16,10 @@ def home(request):
 
 def detalle_video(request, pk):
     video = get_object_or_404(Video, pk=pk, activo=True)
+    video_ligas = video.ligas.all()
     relacionados = Video.objects.filter(activo=True).exclude(pk=pk).filter(
-        Q(liga=video.liga) | Q(canal=video.canal)
-    )[:8]
+        Q(ligas__in=video_ligas) | Q(canal=video.canal)
+    ).distinct()[:8]
 
     context = {
         'video': video,
@@ -40,7 +41,7 @@ def lista_canal(request, slug):
 
 def lista_liga(request, slug):
     liga = get_object_or_404(Liga, slug=slug, activa=True)
-    videos = Video.objects.filter(liga=liga, activo=True)
+    videos = Video.objects.filter(ligas=liga, activo=True).distinct()
 
     context = {
         'liga': liga,

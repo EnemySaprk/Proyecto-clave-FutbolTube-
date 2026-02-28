@@ -35,11 +35,11 @@
         {% endif %}
 
         <h4>{{ video.titulo }}</h4>
-        <div class="d-flex gap-2 mb-3">
+        <div class="d-flex flex-wrap gap-2 mb-3">
             <span class="badge badge-canal">{{ video.canal.nombre }}</span>
-            {% if video.liga %}
-            <span class="badge badge-liga">{{ video.liga.nombre }}</span>
-            {% endif %}
+            {% for liga in video.ligas.all %}
+            <span class="badge badge-liga">{{ liga.nombre }}</span>
+            {% endfor %}
             <span class="text-muted ms-2">{{ video.fecha_publicacion|date:"d M Y" }}</span>
         </div>
         {% if video.descripcion %}
@@ -81,11 +81,9 @@ function cambiarVideo(url, tipo, btn) {
     botones.forEach(function(b) {
         b.style.backgroundColor = '#333';
         b.style.color = '#f1f1f1';
-        b.classList.remove('active');
     });
     btn.style.backgroundColor = '#00d4aa';
     btn.style.color = '#0f0f0f';
-    btn.classList.add('active');
 }
 </script>
 {% endblock %}

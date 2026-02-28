@@ -19,7 +19,7 @@
     {% for video in videos %}
     <div class="col">
         <a href="{% url 'canales:detalle_video' video.pk %}">
-            <div class="card card-video position-relative">
+            <div class="card card-video">
                 {% if video.thumbnail_url %}
                 <img src="{{ video.thumbnail_url }}" alt="{{ video.titulo }}">
                 {% endif %}

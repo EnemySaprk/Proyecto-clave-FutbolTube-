@@ -1,67 +1,69 @@
-{% extends 'base.html' %} {% block contenido %} {% if destacados %}
+﻿{% extends 'base.html' %}
+
+{% block contenido %}
+
+{% if destacados %}
 <section class="mb-5">
-  <h5 class="section-title"><i class="bi bi-star-fill"></i> Destacados</h5>
-  <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
-    {% for video in destacados %}
-    <div class="col">
-      <a href="{% url 'canales:detalle_video' video.pk %}">
-        <div class="card card-video position-relative">
-          {% if video.destacado %}
-          <span class="destacado-badge"
-            ><i class="bi bi-star-fill"></i> Destacado</span
-          >
-          {% endif %} {% if video.thumbnail_url %}
-          <img src="{{ video.thumbnail_url }}" alt="{{ video.titulo }}" />
-          {% endif %}
-          <div class="card-body">
-            <h6 class="card-title">{{ video.titulo }}</h6>
-            <p class="card-text mb-1">
-              <span class="badge badge-canal">{{ video.canal.nombre }}</span>
-              {% if video.liga %}
-              <span class="badge badge-liga">{{ video.liga.nombre }}</span>
-              {% endif %}
-            </p>
-            <p class="card-text">{{ video.fecha_publicacion|timesince }}</p>
-          </div>
+    <h5 class="section-title"><i class="bi bi-star-fill"></i> Destacados</h5>
+    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+        {% for video in destacados %}
+        <div class="col">
+            <a href="{% url 'canales:detalle_video' video.pk %}">
+                <div class="card card-video position-relative">
+                    {% if video.destacado %}
+                    <span class="destacado-badge"><i class="bi bi-star-fill"></i> Destacado</span>
+                    {% endif %}
+                    {% if video.thumbnail_url %}
+                    <img src="{{ video.thumbnail_url }}" alt="{{ video.titulo }}">
+                    {% endif %}
+                    <div class="card-body">
+                        <h6 class="card-title">{{ video.titulo }}</h6>
+                        <p class="card-text mb-1">
+                            <span class="badge badge-canal">{{ video.canal.nombre }}</span>
+                            {% for liga in video.ligas.all %}
+                            <span class="badge badge-liga">{{ liga.nombre }}</span>
+                            {% endfor %}
+                        </p>
+                        <p class="card-text">{{ video.fecha_publicacion|timesince }}</p>
+                    </div>
+                </div>
+            </a>
         </div>
-      </a>
+        {% endfor %}
     </div>
-    {% endfor %}
-  </div>
 </section>
 {% endif %}
 
 <section class="mb-5">
-  <h5 class="section-title"><i class="bi bi-clock-fill"></i> Ultimos Videos</h5>
-  <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-3">
-    {% for video in ultimos %}
-    <div class="col">
-      <a href="{% url 'canales:detalle_video' video.pk %}">
-        <div class="card card-video position-relative">
-          {% if video.destacado %}
-          <span class="destacado-badge"
-            ><i class="bi bi-star-fill"></i> Destacado</span
-          >
-          {% endif %} {% if video.thumbnail_url %}
-          <img src="{{ video.thumbnail_url }}" alt="{{ video.titulo }}" />
-          {% endif %}
-          <div class="card-body">
-            <h6 class="card-title">{{ video.titulo }}</h6>
-            <p class="card-text mb-1">
-              <span class="badge badge-canal">{{ video.canal.nombre }}</span>
-              {% if video.liga %}
-              <span class="badge badge-liga">{{ video.liga.nombre }}</span>
-              {% endif %}
-            </p>
-            <p class="card-text">{{ video.fecha_publicacion|timesince }}</p>
-          </div>
+    <h5 class="section-title"><i class="bi bi-clock-fill"></i> Ultimos Videos</h5>
+    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-3">
+        {% for video in ultimos %}
+        <div class="col">
+            <a href="{% url 'canales:detalle_video' video.pk %}">
+                <div class="card card-video position-relative">
+                    {% if video.destacado %}
+                    <span class="destacado-badge"><i class="bi bi-star-fill"></i> Destacado</span>
+                    {% endif %}
+                    {% if video.thumbnail_url %}
+                    <img src="{{ video.thumbnail_url }}" alt="{{ video.titulo }}">
+                    {% endif %}
+                    <div class="card-body">
+                        <h6 class="card-title">{{ video.titulo }}</h6>
+                        <p class="card-text mb-1">
+                            <span class="badge badge-canal">{{ video.canal.nombre }}</span>
+                            {% for liga in video.ligas.all %}
+                            <span class="badge badge-liga">{{ liga.nombre }}</span>
+                            {% endfor %}
+                        </p>
+                        <p class="card-text">{{ video.fecha_publicacion|timesince }}</p>
+                    </div>
+                </div>
+            </a>
         </div>
-      </a>
+        {% empty %}
+        <p class="text-muted">No hay videos disponibles todavia.</p>
+        {% endfor %}
     </div>
-    {% empty %}
-    <p class="text-muted">No hay videos disponibles todavia.</p>
-    {% endfor %}
-  </div>
 </section>
 
 {% endblock %}
