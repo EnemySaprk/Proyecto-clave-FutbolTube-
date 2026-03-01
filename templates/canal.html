@@ -1,44 +1,40 @@
-﻿{% extends 'base.html' %}
-
-{% block titulo %}{{ canal.nombre }} - FutbolTube{% endblock %}
-
-{% block contenido %}
+﻿{% extends 'base.html' %} {% block titulo %}{{ canal.nombre }} - FutbolTube{%
+endblock %} {% block contenido %}
 <div class="d-flex align-items-center gap-3 mb-4">
-    {% if canal.logo %}
-    <img src="{{ canal.logo.url }}" alt="{{ canal.nombre }}" style="width: 60px; height: 60px; border-radius: 50%; object-fit: cover;">
+  {% if canal.logo %}
+  <img
+    src="{{ canal.logo.url }}"
+    alt="{{ canal.nombre }}"
+    style="width: 60px; height: 60px; border-radius: 50%; object-fit: cover"
+  />
+  {% endif %}
+  <div>
+    <h4 class="mb-0">{{ canal.nombre }}</h4>
+    {% if canal.url_sitio %}
+    <a href="{{ canal.url_sitio }}" target="_blank" class="text-muted">
+      <i class="bi bi-link-45deg"></i> Sitio oficial
+    </a>
     {% endif %}
-    <div>
-        <h4 class="mb-0">{{ canal.nombre }}</h4>
-        {% if canal.url_sitio %}
-        <a href="{{ canal.url_sitio }}" target="_blank" class="text-muted">
-            <i class="bi bi-link-45deg"></i> Sitio oficial
-        </a>
-        {% endif %}
-    </div>
+  </div>
 </div>
 
-<div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-3">
-    {% for video in videos %}
-    <div class="col">
-        <a href="{% url 'canales:detalle_video' video.pk %}">
-            <div class="card card-video">
-                {% if video.thumbnail_url %}
-                <img src="{{ video.thumbnail_url }}" alt="{{ video.titulo }}">
-                {% endif %}
-                <div class="card-body">
-                    <h6 class="card-title">{{ video.titulo }}</h6>
-                    <p class="card-text mb-1">
-                        {% for liga in video.ligas.all %}
-                        <span class="badge badge-liga">{{ liga.nombre }}</span>
-                        {% endfor %}
-                    </p>
-                    <p class="card-text">{{ video.fecha_publicacion|timesince }}</p>
-                </div>
-            </div>
-        </a>
-    </div>
-    {% empty %}
-    <p class="text-muted">Este canal no tiene videos todavia.</p>
-    {% endfor %}
+<div class="row g-3">
+  {% for video in videos %}
+  <div class="col">
+    <a href="{% url 'canales:detalle_video' video.pk %}">
+      <div class="card card-video">
+        {% if video.thumbnail_url %}
+        <img src="{{ video.thumbnail_url }}" alt="{{ video.titulo }}" />
+        {% endif %}
+        <div class="card-body">
+          <h6 class="card-title">{{ video.titulo }}</h6>
+          <p class="card-text">{{ video.fecha_publicacion|timesince }}</p>
+        </div>
+      </div>
+    </a>
+  </div>
+  {% empty %}
+  <p class="text-muted">Este canal no tiene videos todavía.</p>
+  {% endfor %}
 </div>
 {% endblock %}

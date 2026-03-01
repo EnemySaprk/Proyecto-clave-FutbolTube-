@@ -1,8 +1,6 @@
 ﻿from django.db import models
 from cloudinary.models import CloudinaryField
 
-thumbnail = CloudinaryField('image')
-
 
 class ConfigStreaming(models.Model):
     nombre = models.CharField(max_length=50, unique=True)
@@ -21,7 +19,7 @@ class ConfigStreaming(models.Model):
 class Liga(models.Model):
     nombre = models.CharField(max_length=100)
     slug = models.SlugField(unique=True)
-    logo = models.FileField(upload_to='ligas/', blank=True, null=True)
+    logo = CloudinaryField('image', blank=True, null=True)
     pais = models.CharField(max_length=50, blank=True)
     activa = models.BooleanField(default=True)
 
@@ -34,9 +32,9 @@ class Liga(models.Model):
 
 
 class CanalBolaloca(models.Model):
-    numero = models.PositiveIntegerField(unique=True, help_text='Numero del canal (CH1, CH2...)')
+    numero = models.PositiveIntegerField(unique=True)
     nombre = models.CharField(max_length=100)
-    pais = models.CharField(max_length=10, blank=True, help_text='es, fr, de, uk, it, etc.')
+    pais = models.CharField(max_length=10, blank=True)
     activo = models.BooleanField(default=True)
 
     class Meta:
@@ -63,8 +61,8 @@ class CanalBolaloca(models.Model):
 class Canal(models.Model):
     nombre = models.CharField(max_length=100)
     slug = models.SlugField(unique=True)
-    logo = models.FileField(upload_to='canales/', blank=True, null=True)
-    url_sitio = models.URLField(blank=True, help_text='Link al sitio oficial del canal')
+    logo = CloudinaryField('image', blank=True, null=True)
+    url_sitio = models.URLField(blank=True)
     descripcion = models.TextField(blank=True)
     activo = models.BooleanField(default=True)
     fecha_creacion = models.DateTimeField(auto_now_add=True)
@@ -86,18 +84,18 @@ class Video(models.Model):
 
     titulo = models.CharField(max_length=200)
     tipo = models.CharField(max_length=20, choices=TIPO_CHOICES, default='youtube')
-    url_video = models.URLField(help_text='Link del video (YouTube, MP4, o URL del streaming)')
-    youtube_id = models.CharField(max_length=20, blank=True, help_text='Se extrae automaticamente si es YouTube')
+    url_video = models.URLField()
+    youtube_id = models.CharField(max_length=20, blank=True)
     canal = models.ForeignKey(Canal, on_delete=models.CASCADE, related_name='videos')
     ligas = models.ManyToManyField(Liga, blank=True, related_name='videos')
     descripcion = models.TextField(blank=True)
-    thumbnail_custom = models.FileField(upload_to='thumbnails/', blank=True, null=True, help_text='Thumbnail personalizado')
+    thumbnail_custom = CloudinaryField('image', blank=True, null=True)
     fecha_publicacion = models.DateTimeField(auto_now_add=True)
     destacado = models.BooleanField(default=False)
     activo = models.BooleanField(default=True)
-    bolaloca_canal = models.ForeignKey(CanalBolaloca, on_delete=models.SET_NULL, null=True, blank=True, help_text='Canal de bolaloca asociado')
-    stream_id = models.CharField(max_length=50, blank=True, help_text='ID en streamx (ej: espn, espn2, winplus)')
-    tvtvhd_id = models.CharField(max_length=50, blank=True, help_text='ID en tvtvhd (ej: espn, winsportsplus)')
+    bolaloca_canal = models.ForeignKey(CanalBolaloca, on_delete=models.SET_NULL, null=True, blank=True)
+    stream_id = models.CharField(max_length=50, blank=True)
+    tvtvhd_id = models.CharField(max_length=50, blank=True)
 
     class Meta:
         ordering = ['-fecha_publicacion']
@@ -139,47 +137,7 @@ class Video(models.Model):
             return f'https://www.youtube.com/embed/{self.youtube_id}'
         return self.url_video
 
-    def generar_enlaces_streaming(self):
-        creados = 0
-        orden = self.enlaces.count()
 
-        # 1. TvtvHD (principal)
-        if self.tvtvhd_id:
-            try:
-                config_tv = ConfigStreaming.objects.get(nombre='tvtvhd', activo=True)
-                dominio_tv = config_tv.dominio
-                ruta_tv = config_tv.ruta
-            except ConfigStreaming.DoesNotExist:
-                dominio_tv = 'tvtvhd.com'
-                ruta_tv = 'vivo/canales.php?stream='
-
-            url = f'https://{dominio_tv}/{ruta_tv}{self.tvtvhd_id}'
-            _, created = EnlaceVideo.objects.get_or_create(
-                video=self, url=url,
-                defaults={'nombre': f'Opcion 1', 'tipo': 'iframe', 'activo': True, 'orden': orden}
-            )
-            if created:
-                creados += 1
-                orden += 1
-
-        # 2. Bolaloca (solo servidor WIGI)
-        if self.bolaloca_canal:
-            bl = self.bolaloca_canal
-            try:
-                config_bl = ConfigStreaming.objects.get(nombre='bolaloca', activo=True)
-                dominio_bl = config_bl.dominio
-            except ConfigStreaming.DoesNotExist:
-                dominio_bl = 'bolaloca.my'
-
-            url = f'https://{dominio_bl}/player/1/{bl.numero}'
-            _, created = EnlaceVideo.objects.get_or_create(
-                video=self, url=url,
-                defaults={'nombre': f'Opcion 2', 'tipo': 'iframe', 'activo': True, 'orden': orden}
-            )
-            if created:
-                creados += 1
-
-        return creados
 class EnlaceVideo(models.Model):
     TIPO_CHOICES = [
         ('youtube', 'YouTube'),
@@ -188,7 +146,7 @@ class EnlaceVideo(models.Model):
     ]
 
     video = models.ForeignKey(Video, on_delete=models.CASCADE, related_name='enlaces')
-    nombre = models.CharField(max_length=100, help_text='Ej: Opcion 1, ESPN HD, Fox Sports')
+    nombre = models.CharField(max_length=100)
     tipo = models.CharField(max_length=20, choices=TIPO_CHOICES, default='iframe')
     url = models.URLField()
     activo = models.BooleanField(default=True)
@@ -210,10 +168,8 @@ class EnlaceVideo(models.Model):
 
     @property
     def embed_url(self):
-        if self.tipo == 'youtube':
-            yt_id = self.youtube_id
-            if yt_id:
-                return f'https://www.youtube.com/embed/{yt_id}'
+        if self.tipo == 'youtube' and self.youtube_id:
+            return f'https://www.youtube.com/embed/{self.youtube_id}'
         return self.url
 
 
