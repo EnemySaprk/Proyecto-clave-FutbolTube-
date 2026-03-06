@@ -14,7 +14,7 @@
                 <source src="{{ video.url_video }}" type="video/mp4">
             </video>
             {% elif video.tipo == 'iframe' %}
-            <iframe src="{{ video.url_video }}" allowfullscreen allow="autoplay; encrypted-media; fullscreen" style="border:none;"></iframe>
+            <iframe src="{{ video.url_video }}" allowfullscreen allow="autoplay; encrypted-media; fullscreen" sandbox="allow-scripts allow-same-origin" style="border:none;"></iframe>
             {% endif %}
         </div>
 
@@ -75,7 +75,7 @@ function cambiarVideo(url, tipo, btn) {
     } else if (tipo === 'url_directa') {
         reproductor.innerHTML = '<video controls autoplay><source src="' + url + '" type="video/mp4"></video>';
     } else {
-        reproductor.innerHTML = '<iframe src="' + url + '" allowfullscreen allow="autoplay; encrypted-media; fullscreen" style="border:none;"></iframe>';
+        reproductor.innerHTML = '<iframe src="' + url + '" allowfullscreen allow="autoplay; encrypted-media; fullscreen" sandbox="allow-scripts allow-same-origin" style="border:none;"></iframe>';
     }
     var botones = document.querySelectorAll('.btn-option');
     botones.forEach(function(b) {
