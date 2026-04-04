@@ -1,7 +1,7 @@
 ﻿{
-    "name": "FutbolTube",
-    "short_name": "FutbolTube",
-    "description": "Tu plataforma de futbol en vivo",
+    "name": "DepTV",
+    "short_name": "DepTV",
+    "description": "Tu plataforma de deportes en vivo",
     "start_url": "/",
     "display": "standalone",
     "background_color": "#0f0f0f",

@@ -4,3 +4,10 @@ __pycache__/
 db.sqlite3
 staticfiles/
 .env
+*.html.bak
+agenda_hoy.txt
+canales_partidos.json
+test_scrape*.py
+bolaloca_my.html
+www_*.html
+media/

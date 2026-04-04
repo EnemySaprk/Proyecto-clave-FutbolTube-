@@ -130,20 +130,73 @@
         border-bottom: 1px solid var(--border);
         height: 60px;
         z-index: 1050;
-        backdrop-filter: blur(12px);
+        backdrop-filter: blur(16px);
+        padding: 0;
+      }
+      .navbar-inner {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        height: 100%;
+        padding: 0 16px;
+      }
+      .nav-left {
+        display: flex;
+        align-items: center;
+        gap: 12px;
       }
       .navbar-brand {
         color: var(--accent) !important;
-        font-weight: 800;
-        font-size: 1.5rem;
+        font-weight: 900;
+        font-size: 1.4rem;
         letter-spacing: -0.5px;
+        text-decoration: none;
       }
-      .nav-link {
-        color: var(--text-secondary) !important;
-        transition: color 0.2s;
+      .nav-center {
+        display: flex;
+        align-items: center;
+        gap: 4px;
       }
-      .nav-link:hover {
-        color: var(--accent) !important;
+      .nav-pill {
+        padding: 6px 16px;
+        font-size: 0.85rem;
+        font-weight: 600;
+        color: var(--text-secondary);
+        text-decoration: none;
+        border-radius: 8px;
+        transition: all 0.2s;
+      }
+      .nav-pill:hover {
+        color: var(--text-primary);
+        background: var(--card-hover);
+      }
+      .nav-pill.active {
+        color: var(--text-primary);
+        background: var(--bg-card);
+      }
+      .nav-right {
+        display: flex;
+        align-items: center;
+        gap: 4px;
+      }
+      .nav-icon-btn {
+        width: 38px;
+        height: 38px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 8px;
+        border: none;
+        background: none;
+        color: var(--text-secondary);
+        font-size: 1.15rem;
+        cursor: pointer;
+        transition: all 0.2s;
+        text-decoration: none;
+      }
+      .nav-icon-btn:hover {
+        color: var(--text-primary);
+        background: var(--card-hover);
       }
 
       /* ═══════════════════════════════════════════════
@@ -154,7 +207,7 @@
         top: 60px;
         left: 0;
         height: calc(100vh - 60px);
-        width: var(--sidebar-width-collapsed); /* 70 px colapsado */
+        width: 70px;
         background: var(--bg-sidebar);
         transition: width 0.3s ease;
         overflow-x: hidden;
@@ -162,33 +215,55 @@
         z-index: 1040;
         border-right: 1px solid var(--border);
       }
-
-      /* Desktop expandido */
+      .sidebar::-webkit-scrollbar {
+        width: 3px;
+      }
+      .sidebar::-webkit-scrollbar-thumb {
+        background: var(--accent);
+        border-radius: 4px;
+      }
       .sidebar.expanded {
-        width: var(--sidebar-width-expanded); /* 240 px */
+        width: 240px;
       }
 
-      /* Título de sección del sidebar */
-      .sidebar-section-title {
+      .sb-section {
+        padding: 8px 0;
+      }
+      .sb-section + .sb-section {
+        border-top: 1px solid var(--border);
+      }
+
+      .sb-section-title {
         display: flex;
         align-items: center;
         gap: 10px;
-        padding: 14px 16px 6px;
-        font-size: 0.7rem;
+        padding: 10px 16px 6px;
+        font-size: 0.65rem;
         font-weight: 700;
-        letter-spacing: 1px;
+        letter-spacing: 1.5px;
         text-transform: uppercase;
         color: var(--text-dim);
         white-space: nowrap;
         overflow: hidden;
       }
+      .sb-section-title i {
+        font-size: 0.85rem;
+        min-width: 28px;
+        text-align: center;
+      }
+      .sb-section-title span {
+        opacity: 0;
+        transition: opacity 0.2s ease;
+      }
+      .sidebar.expanded .sb-section-title span {
+        opacity: 1;
+      }
 
-      /* Ítems del sidebar */
-      .sidebar-item {
+      .sb-item {
         display: flex;
         align-items: center;
         gap: 12px;
-        padding: 10px 16px;
+        padding: 8px 16px;
         color: var(--text-secondary);
         text-decoration: none;
         transition: all 0.2s;
@@ -196,51 +271,55 @@
         white-space: nowrap;
         overflow: hidden;
       }
-      .sidebar-item:hover {
+      .sb-item:hover {
         background: var(--card-hover);
         color: var(--text-primary);
         border-left-color: var(--accent);
       }
 
-      /* Logos / iconos del sidebar: tamaño fijo */
-      .sidebar-item img,
-      .sidebar-item .icon-placeholder {
+      .sb-logo {
         width: 28px;
         height: 28px;
         min-width: 28px;
+        border-radius: 8px;
         object-fit: contain;
-        border-radius: 6px;
         flex-shrink: 0;
       }
-      .icon-placeholder {
+      .sb-initials {
+        width: 28px;
+        height: 28px;
+        min-width: 28px;
+        border-radius: 8px;
+        background: var(--accent-light, rgba(0, 130, 230, 0.15));
         display: flex;
         align-items: center;
         justify-content: center;
-        background: rgba(0, 130, 230, 0.15);
+        font-size: 0.7rem;
+        font-weight: 800;
         color: var(--accent);
-        font-size: 0.9rem;
+        flex-shrink: 0;
+        text-transform: uppercase;
       }
-
-      /* Texto del sidebar: oculto cuando está colapsado */
-      .sidebar-text {
+      .sb-text {
+        font-size: 0.85rem;
+        font-weight: 500;
         opacity: 0;
         transition: opacity 0.2s ease;
-        pointer-events: none;
         overflow: hidden;
         text-overflow: ellipsis;
-        white-space: nowrap;
+        flex: 1;
       }
-      .sidebar.expanded .sidebar-text {
+      .sidebar.expanded .sb-text {
         opacity: 1;
-        pointer-events: auto;
       }
-      /* También ocultar el texto de los section-titles cuando colapsado */
-      .sidebar-section-title span {
+
+      .sb-arrow {
+        font-size: 0.7rem;
+        color: var(--text-dim);
         opacity: 0;
-        transition: opacity 0.2s ease;
-        white-space: nowrap;
+        transition: opacity 0.2s;
       }
-      .sidebar.expanded .sidebar-section-title span {
+      .sidebar.expanded .sb-item:hover .sb-arrow {
         opacity: 1;
       }
 
@@ -301,10 +380,24 @@
         object-position: center top;
       }
       .slide-gradient {
-        position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
         background:
-          linear-gradient(0deg, var(--bg-body) 0%, rgba(0,0,0,0.5) 30%, rgba(0,0,0,0) 60%),
-          linear-gradient(90deg, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.4) 30%, rgba(0,0,0,0) 55%);
+          linear-gradient(
+            0deg,
+            var(--bg-body) 0%,
+            rgba(0, 0, 0, 0.5) 30%,
+            rgba(0, 0, 0, 0) 60%
+          ),
+          linear-gradient(
+            90deg,
+            rgba(0, 0, 0, 0.7) 0%,
+            rgba(0, 0, 0, 0.4) 30%,
+            rgba(0, 0, 0, 0) 55%
+          );
       }
       .slide-content {
         position: absolute;
@@ -1665,34 +1758,54 @@
 
   <body>
     <!-- ── NAVBAR ──────────────────────────────────── -->
-    <nav class="navbar navbar-custom fixed-top px-3">
-      <div class="d-flex align-items-center gap-3">
-        <i class="bi bi-list" style="font-size: 1.4rem; cursor: pointer; color: var(--text-secondary)" onclick="toggleSidebar()"></i>
-        <a class="navbar-brand mb-0 d-flex align-items-center gap-2" href="{% url 'canales:home' %}">
-          <span style="font-size: 1.3rem;">⚽</span>
-          <span>DepTV</span>
-        </a>
-      </div>
+    <nav class="navbar navbar-custom fixed-top">
+      <div class="navbar-inner">
+        <!-- Left: menu + brand -->
+        <div class="nav-left">
+          <button class="nav-icon-btn" onclick="toggleSidebar()" title="Menú">
+            <i class="bi bi-list" id="menuIcon"></i>
+          </button>
+          <a class="navbar-brand" href="{% url 'canales:home' %}">DepTV</a>
+        </div>
 
-      <div class="d-flex align-items-center gap-0">
-        <a href="{% url 'canales:home' %}" class="nav-link d-inline px-2">
-          <i class="bi bi-house-fill"></i>
-          <span class="d-none d-md-inline ms-1">Inicio</span>
-        </a>
-        <a href="{% url 'canales:agenda' %}" class="nav-link d-inline px-2">
-          <i class="bi bi-calendar-event"></i>
-          <span class="d-none d-md-inline ms-1">Agenda</span>
-        </a>
-        {% now "Y-m-d" as hoy %}
-        {% if hoy >= "2026-05-21" %}
-        <a href="{% url 'canales:mundial' %}" class="nav-link d-inline px-2" style="color: #3cac3b !important;">
-          <i class="bi bi-globe-americas"></i>
-          <span class="d-none d-md-inline ms-1">Mundial</span>
-        </a>
-        {% endif %}
-        <button onclick="toggleTheme()" class="nav-link d-inline px-2 ms-1" style="background:none;border:none;cursor:pointer;color:var(--text-secondary);" title="Cambiar tema">
-          <i class="bi bi-circle-half" id="themeIconNav"></i>
-        </button>
+        <!-- Center: navigation links (desktop) -->
+        <div class="nav-center d-none d-lg-flex">
+          <a href="{% url 'canales:home' %}" class="nav-pill active">Inicio</a>
+          <a href="{% url 'canales:agenda' %}" class="nav-pill">Agenda</a>
+          {% now "Y-m-d" as hoy %} {% if hoy >= "2026-05-21" %}
+          <a
+            href="{% url 'canales:mundial' %}"
+            class="nav-pill"
+            style="color: #3cac3b"
+            >Mundial</a
+          >
+          {% endif %}
+        </div>
+
+        <!-- Right: mobile nav + theme -->
+        <div class="nav-right">
+          <a
+            href="{% url 'canales:home' %}"
+            class="nav-icon-btn d-lg-none"
+            title="Inicio"
+          >
+            <i class="bi bi-house-fill"></i>
+          </a>
+          <a
+            href="{% url 'canales:agenda' %}"
+            class="nav-icon-btn d-lg-none"
+            title="Agenda"
+          >
+            <i class="bi bi-calendar-event"></i>
+          </a>
+          <button
+            onclick="toggleTheme()"
+            class="nav-icon-btn"
+            title="Cambiar tema"
+          >
+            <i class="bi bi-circle-half" id="themeIconNav"></i>
+          </button>
+        </div>
       </div>
     </nav>
 
@@ -1705,37 +1818,54 @@
 
     <!-- ── SIDEBAR ─────────────────────────────────── -->
     <aside class="sidebar" id="sidebar">
-      <div class="sidebar-section-title">
-        <i class="bi bi-broadcast"></i>
-        <span>Canales</span>
+      <!-- Canales -->
+      <div class="sb-section">
+        <div class="sb-section-title">
+          <i class="bi bi-broadcast"></i>
+          <span>Canales</span>
+        </div>
+        {% for canal in canales_sidebar %}
+        <a href="{% url 'canales:canal' canal.slug %}" class="sb-item">
+          {% if canal.logo %}
+          <img
+            src="{{ canal.logo.url }}"
+            alt="{{ canal.nombre }}"
+            class="sb-logo"
+          />
+          {% else %}
+          <span class="sb-initials">{{ canal.nombre|truncatechars:2 }}</span>
+          {% endif %}
+          <span class="sb-text">{{ canal.nombre }}</span>
+          <i class="bi bi-chevron-right sb-arrow"></i>
+        </a>
+        {% endfor %}
       </div>
 
-      {% for canal in canales_sidebar %}
-      <a href="{% url 'canales:canal' canal.slug %}" class="sidebar-item">
-        {% if canal.logo %}
-        <img src="{{ canal.logo.url }}" alt="{{ canal.nombre }}" />
-        {% else %}
-        <span class="icon-placeholder"><i class="bi bi-tv"></i></span>
-        {% endif %}
-        <span class="sidebar-text">{{ canal.nombre }}</span>
-      </a>
-      {% endfor %}
-
-      <div class="sidebar-section-title">
-        <i class="bi bi-trophy"></i>
-        <span>Ligas</span>
+      <!-- Ligas -->
+      <div class="sb-section">
+        <div class="sb-section-title">
+          <i class="bi bi-trophy"></i>
+          <span>Ligas</span>
+        </div>
+        {% for liga in ligas_sidebar %}
+        <a href="{% url 'canales:liga' liga.slug %}" class="sb-item">
+          {% if liga.logo %}
+          <img
+            src="{{ liga.logo.url }}"
+            alt="{{ liga.nombre }}"
+            class="sb-logo"
+          />
+          {% else %}
+          <span class="sb-initials"
+            >{{ liga.nombre|make_list|first }}{{
+            liga.nombre|truncatechars:3|last }}</span
+          >
+          {% endif %}
+          <span class="sb-text">{{ liga.nombre }}</span>
+          <i class="bi bi-chevron-right sb-arrow"></i>
+        </a>
+        {% endfor %}
       </div>
-
-      {% for liga in ligas_sidebar %}
-      <a href="{% url 'canales:liga' liga.slug %}" class="sidebar-item">
-        {% if liga.logo %}
-        <img src="{{ liga.logo.url }}" alt="{{ liga.nombre }}" />
-        {% else %}
-        <span class="icon-placeholder"><i class="bi bi-shield-fill"></i></span>
-        {% endif %}
-        <span class="sidebar-text">{{ liga.nombre }}</span>
-      </a>
-      {% endfor %}
     </aside>
 
     <!-- ── CONTENIDO PRINCIPAL ─────────────────────── -->

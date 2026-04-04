@@ -1,11 +1,11 @@
 ﻿databases:
-  - name: futboltube-db
+  - name: deptv-db
     plan: free
-    databaseName: futboltube
+    databaseName: deptv
 
 services:
   - type: web
-    name: futboltube
+    name: deptv
     plan: free
     runtime: python
     buildCommand: "./build.sh"

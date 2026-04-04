@@ -141,4 +141,4 @@ EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'kesteban1130@gmail.com'  # Cambia por tu correo
 EMAIL_HOST_PASSWORD = 'tu_contraseña_de_app'  # Contraseña de aplicación de Google
-DEFAULT_FROM_EMAIL = 'FutbolTube <tu_correo@gmail.com>'
+DEFAULT_FROM_EMAIL = 'DepTV <tu_correo@gmail.com>'
