@@ -114,17 +114,20 @@
 
 <style>
   .btn-option-active {
-    background-color: #00d4aa !important;
-    color: #0f0f0f !important;
-    border: none;
+    background-color: var(--accent) !important;
+    color: #ffffff !important;
+    border: none !important;
+    box-shadow: 0 2px 10px rgba(10,132,255,0.3) !important;
   }
   .btn-option-inactive {
-    background-color: var(--bg-card) !important;
-    color: var(--text-primary) !important;
-    border: 1px solid var(--border) !important;
+    background-color: transparent !important;
+    color: var(--text-secondary) !important;
+    border: 1px solid var(--border-strong) !important;
   }
   .btn-option-inactive:hover {
-    border-color: var(--accent) !important;
+    background-color: rgba(255,255,255,0.06) !important;
+    color: var(--text-primary) !important;
+    border-color: var(--border-strong) !important;
   }
 </style>
 
