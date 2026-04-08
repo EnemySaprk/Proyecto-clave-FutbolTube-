@@ -1,0 +1,720 @@
+/* ═══════════════════════════════════════════════════════════════
+   DEPTV — Apple-style Design System
+   Inspirado en Apple TV, Apple Sports, iOS 17 dark mode
+   ═══════════════════════════════════════════════════════════════ */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+
+/* ─── Variables Apple ───────────────────────────────────────── */
+:root {
+  --bg-body:       #000000;
+  --bg-card:       #1c1c1e;
+  --bg-elevated:   #2c2c2e;
+  --bg-sidebar:    rgba(28,28,30,0.92);
+  --bg-navbar:     rgba(0,0,0,0.72);
+  --bg-input:      #2c2c2e;
+  --bg-glass:      rgba(28,28,30,0.7);
+
+  --text-primary:   #ffffff;
+  --text-secondary: rgba(235,235,245,0.6);
+  --text-dim:       rgba(235,235,245,0.3);
+  --text-tertiary:  rgba(235,235,245,0.18);
+
+  --accent:         #0a84ff;
+  --accent-hover:   #409cff;
+  --accent-light:   rgba(10,132,255,0.15);
+  --green:          #30d158;
+  --green-light:    rgba(48,209,88,0.15);
+  --red:            #ff453a;
+  --red-light:      rgba(255,69,58,0.15);
+  --amber:          #ffd60a;
+
+  --border:         rgba(255,255,255,0.08);
+  --border-strong:  rgba(255,255,255,0.14);
+  --separator:      rgba(255,255,255,0.06);
+
+  --shadow-sm:  0 2px 8px rgba(0,0,0,0.4);
+  --shadow-md:  0 8px 24px rgba(0,0,0,0.5);
+  --shadow-lg:  0 16px 48px rgba(0,0,0,0.7);
+
+  --radius-sm:  10px;
+  --radius-md:  14px;
+  --radius-lg:  18px;
+  --radius-xl:  22px;
+
+  /* Spring animation */
+  --spring: cubic-bezier(0.34,1.2,0.64,1);
+  --ease:   cubic-bezier(0.4,0,0.2,1);
+
+  --sidebar-width-collapsed: 68px;
+  --sidebar-width-expanded:  240px;
+
+  color-scheme: dark;
+}
+
+[data-theme="light"] {
+  --bg-body:       #f2f2f7;
+  --bg-card:       #ffffff;
+  --bg-elevated:   #f2f2f7;
+  --bg-sidebar:    rgba(242,242,247,0.92);
+  --bg-navbar:     rgba(242,242,247,0.72);
+  --bg-input:      #e5e5ea;
+  --bg-glass:      rgba(255,255,255,0.7);
+
+  --text-primary:   #000000;
+  --text-secondary: rgba(60,60,67,0.6);
+  --text-dim:       rgba(60,60,67,0.36);
+  --text-tertiary:  rgba(60,60,67,0.18);
+
+  --accent:       #007aff;
+  --accent-hover: #0066cc;
+  --accent-light: rgba(0,122,255,0.12);
+  --green:        #34c759;
+  --red:          #ff3b30;
+  --border:       rgba(60,60,67,0.1);
+  --border-strong: rgba(60,60,67,0.16);
+  --separator:    rgba(60,60,67,0.06);
+  --shadow-sm:    0 2px 8px rgba(0,0,0,0.08);
+  --shadow-md:    0 8px 24px rgba(0,0,0,0.12);
+  color-scheme: light;
+}
+
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme]) {
+    --bg-body:       #f2f2f7;
+    --bg-card:       #ffffff;
+    --bg-elevated:   #f2f2f7;
+    --bg-sidebar:    rgba(242,242,247,0.92);
+    --bg-navbar:     rgba(242,242,247,0.72);
+    --bg-input:      #e5e5ea;
+    --bg-glass:      rgba(255,255,255,0.7);
+    --text-primary:  #000000;
+    --text-secondary: rgba(60,60,67,0.6);
+    --text-dim:      rgba(60,60,67,0.36);
+    --accent:        #007aff;
+    --accent-hover:  #0066cc;
+    --accent-light:  rgba(0,122,255,0.12);
+    --green:         #34c759;
+    --red:           #ff3b30;
+    --border:        rgba(60,60,67,0.1);
+    --border-strong: rgba(60,60,67,0.16);
+    --separator:     rgba(60,60,67,0.06);
+    --shadow-sm:     0 2px 8px rgba(0,0,0,0.08);
+    --shadow-md:     0 8px 24px rgba(0,0,0,0.12);
+    color-scheme: light;
+  }
+}
+
+/* ─── Base ──────────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; }
+
+body {
+  background: var(--bg-body) !important;
+  color: var(--text-primary) !important;
+  font-family: -apple-system, 'SF Pro Display', 'SF Pro Text', 'Inter', system-ui, sans-serif !important;
+  -webkit-font-smoothing: antialiased !important;
+  -moz-osx-font-smoothing: grayscale !important;
+}
+
+/* ─── Navbar ─────────────────────────────────────────────────── */
+.navbar-custom {
+  background: var(--bg-navbar) !important;
+  backdrop-filter: saturate(180%) blur(20px) !important;
+  -webkit-backdrop-filter: saturate(180%) blur(20px) !important;
+  border-bottom: 1px solid var(--separator) !important;
+  height: 52px !important;
+}
+
+.navbar-brand {
+  font-weight: 800 !important;
+  font-size: 1.25rem !important;
+  letter-spacing: -0.5px !important;
+  color: var(--text-primary) !important;
+}
+
+.nav-pill {
+  font-size: 0.83rem !important;
+  font-weight: 500 !important;
+  color: var(--text-secondary) !important;
+  border-radius: 8px !important;
+  padding: 5px 14px !important;
+  transition: all 0.18s var(--ease) !important;
+}
+.nav-pill:hover {
+  color: var(--text-primary) !important;
+  background: rgba(255,255,255,0.07) !important;
+}
+.nav-pill.active {
+  color: var(--text-primary) !important;
+  background: rgba(255,255,255,0.1) !important;
+}
+
+.nav-icon-btn {
+  width: 34px !important;
+  height: 34px !important;
+  border-radius: 8px !important;
+  color: var(--text-secondary) !important;
+  transition: all 0.18s var(--ease) !important;
+  font-size: 1.05rem !important;
+}
+.nav-icon-btn:hover {
+  color: var(--text-primary) !important;
+  background: rgba(255,255,255,0.08) !important;
+}
+
+/* ─── Sidebar ────────────────────────────────────────────────── */
+.sidebar {
+  top: 52px !important;
+  height: calc(100vh - 52px) !important;
+  width: var(--sidebar-width-collapsed) !important;
+  background: var(--bg-sidebar) !important;
+  backdrop-filter: saturate(180%) blur(20px) !important;
+  -webkit-backdrop-filter: saturate(180%) blur(20px) !important;
+  border-right: 1px solid var(--separator) !important;
+  transition: width 0.28s var(--ease) !important;
+}
+.sidebar.expanded { width: var(--sidebar-width-expanded) !important; }
+
+.sb-section + .sb-section {
+  border-top: 1px solid var(--separator) !important;
+}
+
+.sb-section-title {
+  color: var(--text-dim) !important;
+  font-size: 0.62rem !important;
+  letter-spacing: 1.2px !important;
+}
+
+.sb-item {
+  margin: 1px 6px !important;
+  padding: 7px 10px !important;
+  border-radius: var(--radius-sm) !important;
+  border-left: none !important;
+  color: var(--text-secondary) !important;
+  transition: background 0.15s var(--ease), color 0.15s var(--ease) !important;
+}
+.sb-item:hover {
+  background: rgba(255,255,255,0.07) !important;
+  color: var(--text-primary) !important;
+  border-left: none !important;
+}
+
+.sb-initials {
+  border-radius: var(--radius-sm) !important;
+  background: var(--accent-light) !important;
+  color: var(--accent) !important;
+}
+.sb-logo {
+  border-radius: var(--radius-sm) !important;
+}
+
+/* ─── Main content ───────────────────────────────────────────── */
+.main-content {
+  margin-left: var(--sidebar-width-collapsed) !important;
+  margin-top: 52px !important;
+  transition: margin-left 0.28s var(--ease) !important;
+}
+.main-content.shifted {
+  margin-left: var(--sidebar-width-expanded) !important;
+}
+
+/* ─── Hero Slider ────────────────────────────────────────────── */
+.hero-slider {
+  border-radius: 0 !important;
+  height: 480px !important;
+  margin-bottom: 36px !important;
+}
+@media (max-width: 768px) {
+  .hero-slider { height: 260px !important; margin-bottom: 24px !important; }
+}
+
+.slide-gradient {
+  background:
+    linear-gradient(0deg,  var(--bg-body) 0%, rgba(0,0,0,0.5) 35%, transparent 65%),
+    linear-gradient(90deg, rgba(0,0,0,0.65) 0%, rgba(0,0,0,0.3) 30%, transparent 55%)
+  !important;
+}
+
+.slide-title {
+  font-size: 2rem !important;
+  font-weight: 800 !important;
+  letter-spacing: -0.5px !important;
+}
+
+.slide-btn {
+  background: rgba(255,255,255,0.9) !important;
+  backdrop-filter: blur(8px) !important;
+  border-radius: 980px !important;
+  font-size: 0.85rem !important;
+  padding: 10px 24px !important;
+  color: #000 !important;
+  font-weight: 700 !important;
+  transition: all 0.2s var(--ease) !important;
+}
+.slide-btn:hover {
+  background: #fff !important;
+  color: #000 !important;
+}
+
+.slider-arrow {
+  width: 38px !important;
+  height: 38px !important;
+  background: rgba(28,28,30,0.7) !important;
+  backdrop-filter: blur(12px) !important;
+  border: 1px solid var(--border-strong) !important;
+  border-radius: 50% !important;
+  transition: all 0.2s var(--ease) !important;
+}
+.slider-arrow:hover {
+  background: rgba(10,132,255,0.5) !important;
+  border-color: var(--accent) !important;
+}
+
+.dot {
+  background: rgba(255,255,255,0.3) !important;
+  width: 6px !important;
+  height: 6px !important;
+}
+.dot.active {
+  background: #fff !important;
+  width: 22px !important;
+}
+
+.slide-fallback {
+  background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 50%, #141414 100%) !important;
+}
+.slide-fallback .hero-title {
+  background: linear-gradient(90deg, #fff 30%, var(--accent)) !important;
+  -webkit-background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
+  background-clip: text !important;
+  font-size: 3.5rem !important;
+  letter-spacing: 3px !important;
+}
+.slide-fallback .hero-subtitle {
+  color: var(--text-secondary) !important;
+}
+
+/* ─── Secciones de canal ─────────────────────────────────────── */
+.channel-section { padding: 0 20px !important; }
+
+.channel-header-link {
+  color: var(--text-primary) !important;
+  transition: opacity 0.18s var(--ease) !important;
+  padding: 4px 0 !important;
+}
+.channel-header-link:hover {
+  color: var(--text-primary) !important;
+  opacity: 0.75 !important;
+}
+.channel-header-link:hover .channel-arrow {
+  transform: translateX(3px) !important;
+  color: var(--text-secondary) !important;
+}
+
+.channel-name {
+  font-size: 1.1rem !important;
+  font-weight: 700 !important;
+  letter-spacing: -0.2px !important;
+}
+
+.channel-logo {
+  width: 36px !important;
+  height: 36px !important;
+  border-radius: var(--radius-sm) !important;
+  border: 1px solid var(--border) !important;
+}
+.channel-icon {
+  width: 36px !important;
+  height: 36px !important;
+  border-radius: var(--radius-sm) !important;
+  background: var(--accent-light) !important;
+  color: var(--accent) !important;
+  font-size: 1rem !important;
+}
+.channel-arrow { color: var(--text-dim) !important; }
+
+/* ─── Carrusel ───────────────────────────────────────────────── */
+.carousel-track {
+  gap: 12px !important;
+  padding: 4px 0 18px !important;
+}
+
+.carousel-btn {
+  background: rgba(28,28,30,0.85) !important;
+  backdrop-filter: blur(12px) !important;
+  border: 1px solid var(--border-strong) !important;
+  width: 36px !important;
+  height: 36px !important;
+  box-shadow: var(--shadow-md) !important;
+}
+.carousel-btn:hover { background: var(--accent) !important; border-color: var(--accent) !important; }
+
+/* ─── Tarjetas de video ──────────────────────────────────────── */
+.carousel-card {
+  flex: 0 0 190px !important;
+  transition: transform 0.28s var(--spring), opacity 0.18s !important;
+}
+.carousel-card:hover { transform: scale(1.04) !important; opacity: 0.92 !important; }
+
+.card-thumb {
+  border-radius: var(--radius-md) !important;
+  background: var(--bg-card) !important;
+  overflow: hidden !important;
+}
+
+.card-overlay {
+  background: rgba(0,0,0,0.35) !important;
+}
+.play-icon { font-size: 2.2rem !important; filter: drop-shadow(0 2px 8px rgba(0,0,0,0.6)) !important; }
+
+.thumb-placeholder {
+  background: var(--bg-elevated) !important;
+  color: var(--text-dim) !important;
+}
+
+.live-badge {
+  background: var(--red) !important;
+  border-radius: 6px !important;
+  font-size: 0.6rem !important;
+  padding: 2px 7px !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.3px !important;
+  box-shadow: 0 0 12px rgba(255,69,58,0.4) !important;
+}
+
+.card-title-text {
+  font-size: 0.82rem !important;
+  font-weight: 500 !important;
+  color: var(--text-primary) !important;
+  line-height: 1.35 !important;
+}
+.card-channel { color: var(--text-dim) !important; font-size: 0.72rem !important; }
+
+/* ─── Tarjetas de partido (Home) ─────────────────────────────── */
+.home-match-card {
+  flex: 0 0 210px !important;
+  background: var(--bg-card) !important;
+  border: 1px solid var(--border) !important;
+  border-radius: var(--radius-lg) !important;
+  padding: 16px !important;
+  transition: transform 0.28s var(--spring), border-color 0.2s, box-shadow 0.2s !important;
+  cursor: pointer !important;
+}
+.home-match-card:hover {
+  transform: translateY(-3px) !important;
+  border-color: var(--border-strong) !important;
+  box-shadow: var(--shadow-md) !important;
+}
+
+.home-match-time {
+  font-size: 0.78rem !important;
+  font-weight: 700 !important;
+  color: var(--accent) !important;
+  margin-bottom: 10px !important;
+  letter-spacing: -0.1px !important;
+}
+
+.home-match-liga {
+  display: flex !important;
+  align-items: center !important;
+  gap: 5px !important;
+  font-size: 0.68rem !important;
+  color: var(--text-dim) !important;
+  margin-bottom: 10px !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.3px !important;
+}
+
+.home-match-team {
+  font-size: 0.85rem !important;
+  font-weight: 500 !important;
+  color: var(--text-primary) !important;
+}
+.home-match-team img {
+  width: 22px !important;
+  height: 22px !important;
+  border-radius: 4px !important;
+}
+.home-match-team strong {
+  font-size: 1rem !important;
+  font-weight: 700 !important;
+  color: #fff !important;
+  min-width: 18px !important;
+  text-align: right !important;
+}
+
+.home-match-channels {
+  border-top: 1px solid var(--separator) !important;
+  padding-top: 10px !important;
+  margin-top: 4px !important;
+  gap: 6px !important;
+}
+.home-match-ch {
+  width: 26px !important;
+  height: 26px !important;
+  border-radius: 7px !important;
+  background: #fff !important;
+  transition: transform 0.2s var(--spring) !important;
+}
+.home-match-ch:hover { transform: scale(1.18) !important; }
+
+/* ─── Agenda ─────────────────────────────────────────────────── */
+.agenda-days {
+  gap: 6px !important;
+  margin-bottom: 28px !important;
+  padding-bottom: 4px !important;
+}
+.agenda-day {
+  background: var(--bg-card) !important;
+  border: 1px solid var(--border) !important;
+  border-radius: var(--radius-md) !important;
+  color: var(--text-secondary) !important;
+  min-width: 66px !important;
+  padding: 10px 14px !important;
+  transition: all 0.2s var(--ease) !important;
+}
+.agenda-day:hover {
+  border-color: var(--border-strong) !important;
+  color: var(--text-primary) !important;
+  background: var(--bg-elevated) !important;
+}
+.agenda-day.active {
+  background: var(--accent) !important;
+  border-color: var(--accent) !important;
+  color: #fff !important;
+  box-shadow: 0 4px 14px rgba(10,132,255,0.35) !important;
+}
+.agenda-day-name { font-size: 0.65rem !important; letter-spacing: 0.5px !important; }
+.agenda-day-num  { font-size: 1.25rem !important; font-weight: 800 !important; line-height: 1.1 !important; }
+.agenda-day-month { font-size: 0.65rem !important; }
+
+.agenda-liga {
+  background: var(--bg-card) !important;
+  border: 1px solid var(--border) !important;
+  border-radius: var(--radius-lg) !important;
+  overflow: hidden !important;
+  margin-bottom: 16px !important;
+}
+.agenda-liga-header {
+  background: rgba(255,255,255,0.03) !important;
+  padding: 12px 16px !important;
+  border-bottom: 1px solid var(--separator) !important;
+  margin-bottom: 0 !important;
+}
+.agenda-liga-nombre {
+  font-size: 0.85rem !important;
+  font-weight: 600 !important;
+  color: var(--text-secondary) !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.5px !important;
+}
+.agenda-liga-logo {
+  width: 20px !important;
+  height: 20px !important;
+  border-radius: 4px !important;
+}
+
+.agenda-partido {
+  padding: 14px 16px !important;
+  border-bottom: 1px solid var(--separator) !important;
+  transition: background 0.15s var(--ease) !important;
+}
+.agenda-partido:last-of-type { border-bottom: none !important; }
+.agenda-partido:hover { background: rgba(255,255,255,0.03) !important; }
+.agenda-partido.active {
+  background: rgba(10,132,255,0.06) !important;
+  border-left: 3px solid var(--accent) !important;
+}
+
+.agenda-hora {
+  font-size: 0.85rem !important;
+  font-weight: 600 !important;
+  color: var(--text-secondary) !important;
+}
+.agenda-envivo {
+  color: var(--red) !important;
+  font-size: 0.72rem !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.3px !important;
+}
+.agenda-finalizado {
+  color: var(--text-dim) !important;
+  font-size: 0.75rem !important;
+}
+
+.agenda-equipo {
+  font-size: 0.9rem !important;
+  color: var(--text-primary) !important;
+  font-weight: 500 !important;
+}
+.agenda-equipo-logo {
+  width: 20px !important;
+  height: 20px !important;
+  border-radius: 4px !important;
+}
+.agenda-gol {
+  font-size: 1rem !important;
+  font-weight: 700 !important;
+  color: #fff !important;
+}
+
+.agenda-ver-btn {
+  background: rgba(10,132,255,0.12) !important;
+  color: var(--accent) !important;
+  border-radius: 980px !important;
+  padding: 5px 13px !important;
+  font-size: 0.78rem !important;
+  font-weight: 600 !important;
+  border: 1px solid rgba(10,132,255,0.2) !important;
+  transition: all 0.18s var(--ease) !important;
+}
+.agenda-partido:hover .agenda-ver-btn {
+  background: var(--accent) !important;
+  color: #fff !important;
+  border-color: var(--accent) !important;
+  box-shadow: 0 2px 10px rgba(10,132,255,0.3) !important;
+}
+
+/* Panel de canales */
+.agenda-canales-panel {
+  background: rgba(255,255,255,0.03) !important;
+  border: none !important;
+  border-top: 1px solid var(--separator) !important;
+  border-radius: 0 0 var(--radius-lg) var(--radius-lg) !important;
+  margin: 0 !important;
+  padding: 14px 16px !important;
+  animation: slideDown 0.22s var(--ease) !important;
+}
+@keyframes slideDown {
+  from { opacity: 0; transform: translateY(-6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.agenda-canales-titulo {
+  font-size: 0.73rem !important;
+  color: var(--text-dim) !important;
+  font-weight: 500 !important;
+  margin-bottom: 10px !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.4px !important;
+}
+
+.agenda-canal-card {
+  background: rgba(255,255,255,0.04) !important;
+  border: 1px solid var(--border) !important;
+  border-radius: var(--radius-md) !important;
+  padding: 11px 14px !important;
+  transition: all 0.18s var(--ease) !important;
+}
+.agenda-canal-card:hover {
+  background: rgba(10,132,255,0.08) !important;
+  border-color: rgba(10,132,255,0.25) !important;
+  transform: none !important;
+}
+.agenda-canal-logo-wrap {
+  border-radius: var(--radius-sm) !important;
+  background: #fff !important;
+  width: 38px !important;
+  height: 38px !important;
+}
+.agenda-canal-nombre { font-size: 0.88rem !important; font-weight: 600 !important; }
+.agenda-canal-sub    { font-size: 0.72rem !important; color: var(--text-dim) !important; }
+.agenda-canal-arrow  { color: var(--text-dim) !important; font-size: 0.8rem !important; }
+
+/* ─── Page with background (canal/liga) ─────────────────────── */
+.page-header-title {
+  font-size: 1.9rem !important;
+  font-weight: 800 !important;
+  letter-spacing: -0.5px !important;
+}
+.page-header-logo {
+  border-radius: var(--radius-md) !important;
+  background: rgba(255,255,255,0.9) !important;
+  border: none !important;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.3) !important;
+}
+
+/* ─── Reproductor / Detalle video ────────────────────────────── */
+#reproductor {
+  border-radius: var(--radius-lg) !important;
+  overflow: hidden !important;
+  background: #000 !important;
+  box-shadow: var(--shadow-lg) !important;
+}
+
+.btn-option {
+  border-radius: 980px !important;
+  font-size: 0.78rem !important;
+  font-weight: 600 !important;
+  padding: 5px 16px !important;
+  transition: all 0.18s var(--ease) !important;
+  border: 1px solid var(--border) !important;
+}
+
+.badge-liga {
+  background: var(--accent-light) !important;
+  color: var(--accent) !important;
+  border-radius: 980px !important;
+  font-size: 0.68rem !important;
+  font-weight: 600 !important;
+  padding: 3px 10px !important;
+}
+.badge-canal {
+  background: rgba(255,255,255,0.06) !important;
+  color: var(--text-secondary) !important;
+  border: 1px solid var(--border) !important;
+  border-radius: 980px !important;
+  font-size: 0.68rem !important;
+  padding: 3px 10px !important;
+}
+
+.section-title {
+  font-size: 0.9rem !important;
+  font-weight: 700 !important;
+  color: var(--text-primary) !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.5px !important;
+  border-bottom: none !important;
+  padding-bottom: 0 !important;
+  margin-bottom: 16px !important;
+}
+
+/* ─── Video grid ─────────────────────────────────────────────── */
+.video-grid {
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)) !important;
+  gap: 14px !important;
+}
+
+/* ─── Scrollbar ──────────────────────────────────────────────── */
+::-webkit-scrollbar { width: 4px; height: 4px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.12); border-radius: 2px; }
+::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.22); }
+
+/* ─── Mobile ─────────────────────────────────────────────────── */
+@media (max-width: 768px) {
+  .channel-section { padding: 0 14px !important; }
+  .hero-slider { height: 240px !important; }
+  .slide-content { bottom: 60px !important; left: 20px !important; }
+  .slide-title { font-size: 1.4rem !important; }
+  .home-match-card { flex: 0 0 185px !important; }
+  .agenda-partido { padding: 12px !important; }
+}
+
+/* ─── Mundial (mantener identidad propia) ────────────────────── */
+.mundial-grupo {
+  background: rgba(28,28,30,0.5) !important;
+  border: 1px solid var(--border) !important;
+  backdrop-filter: blur(12px) !important;
+  -webkit-backdrop-filter: blur(12px) !important;
+  border-radius: var(--radius-xl) !important;
+}
+.mundial-grupo:hover {
+  background: rgba(44,44,46,0.7) !important;
+}
+.mundial-hero-badge {
+  backdrop-filter: blur(12px) !important;
+  border: 1px solid var(--border-strong) !important;
+  border-radius: 980px !important;
+}
