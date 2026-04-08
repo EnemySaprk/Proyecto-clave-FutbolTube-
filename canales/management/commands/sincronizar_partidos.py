@@ -1,7 +1,10 @@
 ﻿import requests
 from datetime import datetime, timedelta
+from zoneinfo import ZoneInfo
 from django.core.management.base import BaseCommand
 from canales.models import Partido, MapeoLigaCanal
+
+COL_TZ = ZoneInfo('America/Bogota')
 
 
 API_TOKEN = 'f432574001814e25b223b4e91e796fa3'
@@ -68,9 +71,7 @@ class Command(BaseCommand):
                         continue
 
                     dt = datetime.fromisoformat(fecha_utc.replace('Z', '+00:00'))
-                    # Convertir a hora Colombia (UTC-5)
-                    from datetime import timezone
-                    dt_col = dt.astimezone(timezone(timedelta(hours=-5)))
+                    dt_col = dt.astimezone(COL_TZ)
 
                     estado_map = {
                         'SCHEDULED': 'NS',

@@ -1,7 +1,9 @@
-﻿import requests
+﻿import hashlib
+import requests
 import re
 import time
 from datetime import datetime, timedelta, timezone
+from zoneinfo import ZoneInfo
 from bs4 import BeautifulSoup
 from django.core.management.base import BaseCommand
 from canales.models import Partido, Video
@@ -9,7 +11,7 @@ from canales.models import Partido, Video
 
 API_TOKEN = 'f432574001814e25b223b4e91e796fa3'
 API_URL = 'https://api.football-data.org/v4'
-COL_TZ = timezone(timedelta(hours=-5))
+COL_TZ = ZoneInfo('America/Bogota')
 
 LIGAS_API = {
     'PL': {'nombre': 'Premier League', 'id': 2021},
@@ -199,6 +201,24 @@ class Command(BaseCommand):
 
         self.stdout.write(self.style.SUCCESS(f'  Canales asignados: {asignados}'))
 
+    # Mapeo de keywords de liga -> liga_api_id para fallback por MapeoLigaCanal
+    LIGA_API_IDS = {
+        'copa libertadores':  13,
+        'copa sudamericana':  11,
+        'europa league':      3,
+        'conference league':  848,
+        'liga betplay':       239,
+        'categoria primera':  239,
+        'primera a':          239,
+        'nations league':     5,
+    }
+
+    def _detectar_liga_api_id(self, liga_lower):
+        for keyword, api_id in self.LIGA_API_IDS.items():
+            if keyword in liga_lower:
+                return api_id
+        return 0
+
     def cargar_ligas_extra(self, agenda):
         """Carga partidos de ligas extra (amistosos, betplay, etc.)"""
         creados = 0
@@ -216,17 +236,18 @@ class Command(BaseCommand):
             if not es_extra:
                 continue
 
-            # ID determinístico basado en fecha + equipos
+            # ID determinístico basado en fecha + equipos (hash completo, no solo primeros 8 bytes)
             id_str = f'{evento["fecha"]}_{evento["local"]}_{evento["visitante"]}'
-            api_id = int.from_bytes(id_str.encode('utf-8')[:8], 'big') % 2147483647
+            api_id = int(hashlib.md5(id_str.encode('utf-8')).hexdigest(), 16) % 2147483647
             canales_str = ','.join(evento['canales_mapeados']) if evento['canales_mapeados'] else ''
+            liga_api_id = self._detectar_liga_api_id(liga_lower)
 
             partido, created = Partido.objects.update_or_create(
                 api_id=api_id,
                 defaults={
                     'liga_nombre': evento['liga'],
                     'liga_logo': '',
-                    'liga_api_id': 0,
+                    'liga_api_id': liga_api_id,
                     'equipo_local': evento['local'],
                     'equipo_local_logo': '',
                     'equipo_visitante': evento['visitante'],

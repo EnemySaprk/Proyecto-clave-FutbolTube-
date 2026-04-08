@@ -1,4 +1,4 @@
-﻿{% extends "admin/base.html" %}
+{% extends "admin/base.html" %}
 {% load static %}
 
 {% block title %}DepTV Admin{% endblock %}
@@ -6,7 +6,11 @@
 {% block branding %}
 <h1 id="site-name">
     <a href="{% url 'admin:index' %}">
-        <span style="color: #0082e6;">&#9917;</span> DepTV Admin
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true" style="flex-shrink:0;">
+            <rect width="20" height="20" rx="5" fill="#6366f1"/>
+            <path d="M5 10.5L8.5 14L15 7" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <span>DepTV <span style="font-weight:400;color:#52525b;font-size:0.82rem;">Admin</span></span>
     </a>
 </h1>
 {% endblock %}
