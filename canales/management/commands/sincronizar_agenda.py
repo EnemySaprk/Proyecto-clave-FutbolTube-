@@ -12,6 +12,7 @@ from canales.models import Partido, Video
 API_TOKEN = 'f432574001814e25b223b4e91e796fa3'
 API_URL = 'https://api.football-data.org/v4'
 COL_TZ = ZoneInfo('America/Bogota')
+SPAIN_TZ = ZoneInfo('Europe/Madrid')
 
 LIGAS_API = {
     'PL': {'nombre': 'Premier League', 'id': 2021},
@@ -146,8 +147,13 @@ class Command(BaseCommand):
                 continue
 
             try:
-                hora = datetime.strptime(hora_str, '%H:%M').time()
-            except ValueError:
+                hora_spain = datetime.strptime(hora_str, '%H:%M').time()
+                # RusticoTV usa hora de España (Europe/Madrid). Convertir a Colombia.
+                dt_spain = datetime.combine(hoy, hora_spain, tzinfo=SPAIN_TZ)
+                dt_col = dt_spain.astimezone(COL_TZ)
+                hora = dt_col.time()
+                fecha_partido = dt_col.date()
+            except (ValueError, Exception):
                 continue
 
             if partido_actual:
@@ -157,7 +163,7 @@ class Command(BaseCommand):
                 'liga': liga,
                 'local': local,
                 'visitante': visitante,
-                'fecha': hoy,
+                'fecha': fecha_partido,
                 'hora': hora,
                 'canales_rustico': [],
                 'canales_mapeados': [],
