@@ -31,11 +31,14 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     'canales',
+    'rest_framework',
+    'corsheaders',
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -142,3 +145,18 @@ EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'kesteban1130@gmail.com'  # Cambia por tu correo
 EMAIL_HOST_PASSWORD = 'tu_contraseña_de_app'  # Contraseña de aplicación de Google
 DEFAULT_FROM_EMAIL = 'DepTV <tu_correo@gmail.com>'
+# =========================
+# REST FRAMEWORK
+# =========================
+REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.AllowAny',
+    ],
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    'PAGE_SIZE': 50,
+}
+
+# =========================
+# CORS (para Flutter)
+# =========================
+CORS_ALLOW_ALL_ORIGINS = True
