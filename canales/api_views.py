@@ -88,3 +88,14 @@ def partidos_hoy(request):
     hoy = date.today()
     qs = Partido.objects.filter(fecha=hoy).order_by('hora')
     return Response(PartidoSerializer(qs, many=True, context={'request': request}).data)
+
+
+@api_view(['GET'])
+def partidos_live(request):
+    """Endpoint ultraligero para polling en tiempo real. Solo estado y marcador."""
+    hoy = date.today()
+    data = list(
+        Partido.objects.filter(fecha=hoy)
+        .values('api_id', 'estado', 'goles_local', 'goles_visitante', 'minuto')
+    )
+    return Response(data)

@@ -91,13 +91,36 @@ class BannerImagenAdmin(admin.ModelAdmin):
 
 @admin.register(MapeoLigaCanal)
 class MapeoLigaCanalAdmin(admin.ModelAdmin):
-    list_display = ['liga_nombre', 'liga_api_id', 'activo']
+    list_display = ['liga_nombre', 'liga_api_id', 'num_canales', 'activo']
     list_editable = ['activo']
     filter_horizontal = ['canales']
+    search_fields = ['liga_nombre']
+
+    @admin.display(description='# Canales')
+    def num_canales(self, obj):
+        return obj.canales.count()
 
 
 @admin.register(Partido)
 class PartidoAdmin(admin.ModelAdmin):
-    list_display = ['equipo_local', 'equipo_visitante', 'liga_nombre', 'fecha', 'hora', 'estado']
-    list_filter = ['liga_nombre', 'fecha', 'estado']
+    list_display = [
+        'fecha', 'hora', 'estado',
+        'equipo_local', 'equipo_visitante',
+        'liga_nombre', 'liga_api_id',
+        'canales_bolaloca',
+    ]
+    list_editable = ['canales_bolaloca']
+    list_filter = ['fecha', 'estado', 'liga_nombre']
     search_fields = ['equipo_local', 'equipo_visitante', 'liga_nombre']
+    ordering = ['-fecha', 'hora']
+    list_per_page = 50
+
+    def get_queryset(self, request):
+        qs = super().get_queryset(request)
+        # Mostrar primero los de hoy
+        from datetime import date
+        hoy = date.today()
+        from django.db.models import Case, When, IntegerField
+        return qs.annotate(
+            es_hoy=Case(When(fecha=hoy, then=0), default=1, output_field=IntegerField())
+        ).order_by('es_hoy', '-fecha', 'hora')

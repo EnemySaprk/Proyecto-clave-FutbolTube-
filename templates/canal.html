@@ -33,6 +33,59 @@
         <div class="page-bg-dots" id="pageDots"></div>
         {% endif %}
 
+        {% if partidos_hoy_canal %}
+        <div class="canal-hoy">
+            <div class="canal-hoy-header">
+                <span class="canal-hoy-dot"></span>
+                <span class="canal-hoy-title">Hoy en este canal</span>
+                <a href="{% url 'canales:agenda' %}" class="canal-hoy-link">Ver agenda <i class="bi bi-arrow-right"></i></a>
+            </div>
+            <div class="canal-hoy-list">
+                {% for partido in partidos_hoy_canal %}
+                <div class="canal-partido-row">
+                    <div class="canal-partido-estado">
+                        {% if partido.estado == 'NS' %}
+                            <span class="cp-hora">{{ partido.hora|time:'H:i' }}</span>
+                        {% elif partido.estado == 'FT' or partido.estado == 'AET' or partido.estado == 'PEN' %}
+                            <span class="cp-fin">FIN</span>
+                        {% else %}
+                            <span class="cp-vivo"><span class="cp-pulse"></span> VIVO</span>
+                        {% endif %}
+                    </div>
+                    <div class="canal-partido-liga">
+                        {% if partido.liga_logo %}
+                        <img src="{{ partido.liga_logo }}" alt="{{ partido.liga_nombre }}" class="cp-liga-logo">
+                        {% endif %}
+                        <span class="cp-liga-nombre">{{ partido.liga_nombre }}</span>
+                    </div>
+                    <div class="canal-partido-equipos">
+                        <div class="cp-equipo">
+                            {% if partido.equipo_local_logo %}<img src="{{ partido.equipo_local_logo }}" alt="">{% endif %}
+                            <span>{{ partido.equipo_local }}</span>
+                            {% if partido.goles_local != None %}<strong>{{ partido.goles_local }}</strong>{% endif %}
+                        </div>
+                        <span class="cp-vs">vs</span>
+                        <div class="cp-equipo">
+                            {% if partido.equipo_visitante_logo %}<img src="{{ partido.equipo_visitante_logo }}" alt="">{% endif %}
+                            <span>{{ partido.equipo_visitante }}</span>
+                            {% if partido.goles_visitante != None %}<strong>{{ partido.goles_visitante }}</strong>{% endif %}
+                        </div>
+                    </div>
+                    <div class="canal-partido-ver">
+                        {% for video in partido.canales_transmision %}
+                            {% if video.canal_id == canal.id %}
+                            <a href="{% url 'canales:detalle_video' video.pk %}" class="cp-ver-btn">
+                                <i class="bi bi-play-circle-fill"></i> Ver
+                            </a>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        {% endif %}
+
         <div class="video-grid" style="margin-top: 30px;">
             {% for video in videos %}
             <a href="{% url 'canales:detalle_video' video.pk %}" class="carousel-card">

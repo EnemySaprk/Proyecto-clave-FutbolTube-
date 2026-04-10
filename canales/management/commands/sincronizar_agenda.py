@@ -322,6 +322,12 @@ class Command(BaseCommand):
                     away = match.get('awayTeam', {})
                     competition = match.get('competition', {})
 
+                    estado = estado_map.get(match.get('status', 'SCHEDULED'), 'NS')
+                    # Minuto: presente solo en partidos en curso
+                    minuto = None
+                    if estado not in ('NS', 'FT', 'AET', 'PEN', 'SUSP', 'PST', 'CANC'):
+                        minuto = match.get('minute')
+
                     Partido.objects.update_or_create(
                         api_id=match['id'],
                         defaults={
@@ -334,9 +340,10 @@ class Command(BaseCommand):
                             'equipo_visitante_logo': away.get('crest') or '',
                             'fecha': dt_col.date(),
                             'hora': dt_col.time(),
-                            'estado': estado_map.get(match.get('status', 'SCHEDULED'), 'NS'),
+                            'estado': estado,
                             'goles_local': score.get('home'),
                             'goles_visitante': score.get('away'),
+                            'minuto': minuto,
                         }
                     )
                     total += 1

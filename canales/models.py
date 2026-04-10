@@ -274,6 +274,10 @@ class Partido(models.Model):
         max_length=200, blank=True,
         help_text='Números de canales bolaloca separados por coma (ej: 81,87,94)',
     )
+    minuto              = models.PositiveIntegerField(
+        null=True, blank=True,
+        help_text='Minuto actual del partido (solo durante partidos en vivo)',
+    )
 
     # tvtvhd_id → bolaloca número
     _MAPEO_TVTVHD = {

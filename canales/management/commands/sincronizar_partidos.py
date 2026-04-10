@@ -95,6 +95,11 @@ class Command(BaseCommand):
                     away = match.get('awayTeam', {})
                     competition = match.get('competition', {})
 
+                    # Minuto solo en partidos en curso
+                    minuto = None
+                    if estado not in ('NS', 'FT', 'AET', 'PEN', 'SUSP', 'PST', 'CANC'):
+                        minuto = match.get('minute')
+
                     partido, created = Partido.objects.update_or_create(
                         api_id=match['id'],
                         defaults={
@@ -110,6 +115,7 @@ class Command(BaseCommand):
                             'estado': estado,
                             'goles_local': goles_local,
                             'goles_visitante': goles_visitante,
+                            'minuto': minuto,
                         }
                     )
 

@@ -197,27 +197,28 @@ body {
 
 /* ─── HERO SLIDER ────────────────────────────────────────────── */
 .hero-slider {
-  height: 500px !important;
-  margin-bottom: 40px !important;
+  height: 460px !important;
+  margin: 16px 20px 36px !important;
+  border-radius: 20px !important;
 }
 @media (max-width: 768px) {
-  .hero-slider { height: 260px !important; margin-bottom: 28px !important; }
+  .hero-slider { height: 220px !important; margin: 12px 12px 20px !important; border-radius: 16px !important; }
 }
 
-.slide img { filter: brightness(0.85) !important; }
+.slide img { filter: brightness(0.88) !important; }
 
 .slide-gradient {
   background:
-    linear-gradient(0deg,  var(--bg-body) 0%, rgba(8,8,12,0.6) 40%, transparent 70%),
-    linear-gradient(90deg, rgba(8,8,12,0.75) 0%, rgba(8,8,12,0.25) 35%, transparent 60%)
+    linear-gradient(0deg,  rgba(0,0,0,0.82) 0%, rgba(0,0,0,0.35) 45%, transparent 72%),
+    linear-gradient(90deg, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.2) 35%, transparent 58%)
   !important;
 }
 
 .slide-title {
-  font-size: 2.2rem !important;
+  font-size: 1.7rem !important;
   font-weight: 800 !important;
-  letter-spacing: -0.6px !important;
-  line-height: 1.1 !important;
+  letter-spacing: -0.3px !important;
+  line-height: 1.15 !important;
 }
 
 .slide-btn {
@@ -636,12 +637,337 @@ body {
 /* ─── MOBILE ─────────────────────────────────────────────────── */
 @media (max-width: 768px) {
   .channel-section { padding: 0 14px !important; }
-  .hero-slider { height: 240px !important; margin-bottom: 24px !important; }
-  .slide-content { left: 18px !important; bottom: 56px !important; }
-  .slide-title { font-size: 1.4rem !important; }
+  .hero-slider { height: 220px !important; margin: 0 12px 20px !important; border-radius: 16px !important; }
+  .slide-content { left: 16px !important; bottom: 18px !important; }
+  .slide-title { font-size: 1.1rem !important; }
   .home-match-card { flex: 0 0 188px !important; }
   .agenda-partido { padding: 11px 14px !important; }
   .agenda-ver { width: 56px !important; }
+}
+
+/* ─── PULSO VIVO (compartido) ───────────────────────────────── */
+.cp-pulse {
+  display: inline-block;
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: var(--red);
+  box-shadow: 0 0 0 0 var(--red-glow);
+  animation: pulse-ring 1.4s ease-out infinite;
+  vertical-align: middle;
+  margin-right: 4px;
+}
+@keyframes pulse-ring {
+  0%   { box-shadow: 0 0 0 0 rgba(244,63,94,0.6); }
+  70%  { box-shadow: 0 0 0 8px rgba(244,63,94,0); }
+  100% { box-shadow: 0 0 0 0 rgba(244,63,94,0); }
+}
+
+/* ─── BANNER VIVO AHORA (home) ──────────────────────────────── */
+.vivo-banner {
+  background: linear-gradient(90deg, rgba(244,63,94,0.12) 0%, rgba(244,63,94,0.04) 100%);
+  border-bottom: 1px solid rgba(244,63,94,0.2);
+  padding: 10px 20px;
+  overflow: hidden;
+}
+.vivo-banner-inner {
+  display: flex; align-items: center; gap: 16px;
+  max-width: 100%; overflow: hidden;
+}
+.vivo-badge-live {
+  display: flex; align-items: center; gap: 6px;
+  background: var(--red); color: #fff;
+  font-size: 0.72rem; font-weight: 700; letter-spacing: 0.05em;
+  padding: 3px 10px; border-radius: var(--r-pill);
+  white-space: nowrap; flex-shrink: 0;
+}
+.vivo-scroll {
+  display: flex; align-items: center; gap: 12px;
+  overflow: hidden; flex: 1; min-width: 0;
+  mask-image: linear-gradient(90deg, transparent 0, #000 40px, #000 calc(100% - 40px), transparent 100%);
+}
+.vivo-item {
+  display: flex; align-items: center; gap: 6px;
+  white-space: nowrap; font-size: 0.85rem; color: var(--text-1);
+}
+.vivo-item img { width: 18px; height: 18px; object-fit: contain; }
+.vivo-score { font-weight: 800; color: var(--text-1); }
+.vivo-sep { color: var(--text-3); font-size: 1.2rem; }
+.vivo-ver-todos {
+  display: flex; align-items: center; gap: 4px; white-space: nowrap;
+  font-size: 0.8rem; font-weight: 600; color: var(--red);
+  text-decoration: none; flex-shrink: 0;
+  transition: opacity var(--t-fast) var(--ease);
+}
+.vivo-ver-todos:hover { opacity: 0.7; }
+
+/* ─── PARTIDOS DE HOY — LISTA HOME ─────────────────────────── */
+.home-partidos-section {
+  padding: 0 20px 8px;
+}
+.home-partidos-header {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 18px 0 12px;
+}
+.home-partidos-title-wrap {
+  display: flex; align-items: center; gap: 10px;
+}
+.home-partidos-icon {
+  width: 32px; height: 32px; border-radius: var(--r-sm);
+  background: linear-gradient(135deg, #e60000, #990000);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.9rem; color: #fff;
+}
+.home-partidos-title {
+  font-size: 1rem; font-weight: 700; margin: 0; color: var(--text-1);
+}
+.home-partidos-agenda-link {
+  font-size: 0.8rem; font-weight: 600; color: var(--accent-light);
+  text-decoration: none; display: flex; align-items: center; gap: 4px;
+  transition: opacity var(--t-fast) var(--ease);
+}
+.home-partidos-agenda-link:hover { opacity: 0.7; }
+
+.home-partidos-list {
+  display: flex; flex-direction: column; gap: 2px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+  overflow: hidden;
+}
+
+/* Fila de partido */
+.hpl-row {
+  display: grid;
+  grid-template-columns: 60px 1fr 2fr auto;
+  align-items: center;
+  gap: 12px;
+  padding: 11px 16px;
+  border-bottom: 1px solid var(--border);
+  cursor: pointer;
+  transition: background var(--t-fast) var(--ease);
+  position: relative;
+}
+.hpl-row:last-child { border-bottom: none; }
+.hpl-row:hover { background: var(--bg-hover); }
+.hpl-row--vivo { background: rgba(244,63,94,0.05); }
+.hpl-row--vivo:hover { background: rgba(244,63,94,0.1); }
+.hpl-row--vivo::before {
+  content: '';
+  position: absolute; left: 0; top: 0; bottom: 0;
+  width: 3px; background: var(--red);
+  border-radius: 0 2px 2px 0;
+}
+
+.hpl-estado { text-align: center; }
+.hpl-hora { font-size: 0.85rem; font-weight: 700; color: var(--text-2); }
+.hpl-fin  { font-size: 0.75rem; font-weight: 600; color: var(--text-3); }
+.hpl-vivo { display: flex; justify-content: center; }
+
+.hpl-liga {
+  display: flex; align-items: center; gap: 6px; min-width: 0;
+}
+.hpl-liga-logo { width: 18px; height: 18px; object-fit: contain; flex-shrink: 0; }
+.hpl-liga-nombre {
+  font-size: 0.75rem; color: var(--text-3); font-weight: 500;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+
+.hpl-equipos {
+  display: flex; align-items: center; gap: 10px; min-width: 0;
+}
+.hpl-equipo {
+  display: flex; align-items: center; gap: 6px;
+  flex: 1; min-width: 0;
+}
+.hpl-equipo--right { justify-content: flex-end; }
+.hpl-eq-logo { width: 22px; height: 22px; object-fit: contain; flex-shrink: 0; }
+.hpl-eq-nombre {
+  font-size: 0.88rem; font-weight: 600; color: var(--text-1);
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.hpl-marcador {
+  font-size: 0.95rem; font-weight: 800; color: var(--text-1);
+  white-space: nowrap; flex-shrink: 0;
+  min-width: 40px; text-align: center;
+}
+.hpl-marcador-ns { color: var(--text-3); font-weight: 500; font-size: 0.8rem; }
+
+.hpl-canales-preview {
+  display: flex; align-items: center; gap: 4px; flex-shrink: 0;
+}
+.hpl-canal-chip {
+  display: flex; align-items: center; justify-content: center;
+  width: 28px; height: 28px; border-radius: var(--r-sm);
+  background: var(--bg-elevated); border: 1px solid var(--border);
+  text-decoration: none; color: var(--text-2); font-size: 0.75rem;
+  transition: background var(--t-fast) var(--ease), border-color var(--t-fast) var(--ease);
+  overflow: hidden;
+}
+.hpl-canal-chip img { width: 100%; height: 100%; object-fit: contain; }
+.hpl-canal-chip:hover { background: var(--accent-subtle); border-color: var(--accent); }
+
+/* ─── LIVE POLLING — flash + timestamp ──────────────────────── */
+@keyframes live-flash {
+  0%   { background: rgba(16,185,129,0.35); }
+  100% { background: transparent; }
+}
+.live-flash {
+  animation: live-flash 0.7s var(--ease) forwards;
+  border-radius: 4px;
+}
+
+/* Minuto en fila home */
+.hpl-vivo { display: flex; flex-direction: column; align-items: center; gap: 2px; }
+.js-minuto {
+  font-size: 0.7rem; font-weight: 800; color: var(--red);
+  letter-spacing: 0.02em; line-height: 1;
+}
+
+/* Entretiempo — color ámbar */
+.agenda-envivo--ht { color: var(--amber) !important; }
+.agenda-envivo--ht .cp-pulse { background: var(--amber); box-shadow: 0 0 0 0 rgba(245,158,11,0.6); }
+
+/* Ocultar goles vacíos en agenda */
+.agenda-gol:empty { display: none; }
+
+.live-ts {
+  font-size: 0.72rem;
+  color: var(--text-3);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.02em;
+}
+
+/* Botones staff en agenda */
+.agenda-edit-btn {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 28px; height: 28px; border-radius: var(--r-sm);
+  background: var(--bg-elevated); border: 1px dashed var(--border-2);
+  color: var(--text-3); font-size: 0.85rem; text-decoration: none;
+  transition: color var(--t-fast) var(--ease), border-color var(--t-fast) var(--ease);
+}
+.agenda-edit-btn:hover { color: var(--accent-light); border-color: var(--accent); }
+
+.agenda-edit-link {
+  display: flex; align-items: center; gap: 6px;
+  padding: 8px 16px; font-size: 0.78rem; font-weight: 600;
+  color: var(--text-3); text-decoration: none;
+  border-top: 1px solid var(--border);
+  transition: color var(--t-fast) var(--ease);
+}
+.agenda-edit-link:hover { color: var(--accent-light); }
+
+/* Fila sin canales (link a agenda) */
+.hpl-row--sin-canal {
+  text-decoration: none;
+  opacity: 0.65;
+  transition: opacity var(--t-fast) var(--ease), background var(--t-fast) var(--ease);
+}
+.hpl-row--sin-canal:hover { opacity: 1; background: var(--bg-hover); }
+.hpl-sin-canal {
+  display: flex; align-items: center; justify-content: flex-end;
+  color: var(--text-3); font-size: 0.9rem;
+  padding-right: 2px;
+}
+
+@media (max-width: 600px) {
+  .hpl-row {
+    grid-template-columns: 50px 1fr auto;
+    grid-template-rows: auto auto;
+  }
+  .hpl-liga { grid-column: 2 / span 2; }
+  .hpl-equipos { grid-column: 1 / span 3; }
+  .hpl-canales-preview { grid-column: 3; grid-row: 1; }
+}
+
+/* ─── HOY EN ESTE CANAL (canal.html) ────────────────────────── */
+.canal-hoy {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+  overflow: hidden;
+  margin-top: 24px;
+}
+.canal-hoy-header {
+  display: flex; align-items: center; gap: 10px;
+  padding: 14px 18px;
+  border-bottom: 1px solid var(--border);
+  background: var(--bg-elevated);
+}
+.canal-hoy-dot {
+  display: inline-block;
+  width: 8px; height: 8px; border-radius: 50%;
+  background: var(--red);
+  animation: pulse-ring 1.4s ease-out infinite;
+}
+.canal-hoy-title {
+  font-size: 0.9rem; font-weight: 700; color: var(--text-1); flex: 1;
+}
+.canal-hoy-link {
+  font-size: 0.78rem; font-weight: 600; color: var(--accent-light);
+  text-decoration: none; display: flex; align-items: center; gap: 4px;
+  transition: opacity var(--t-fast) var(--ease);
+}
+.canal-hoy-link:hover { opacity: 0.7; }
+
+.canal-hoy-list { display: flex; flex-direction: column; }
+
+.canal-partido-row {
+  display: grid;
+  grid-template-columns: 64px 1fr 2fr 80px;
+  align-items: center; gap: 12px;
+  padding: 12px 18px;
+  border-bottom: 1px solid var(--border);
+  transition: background var(--t-fast) var(--ease);
+}
+.canal-partido-row:last-child { border-bottom: none; }
+.canal-partido-row:hover { background: var(--bg-hover); }
+
+.canal-partido-estado { text-align: center; }
+.cp-hora  { font-size: 0.85rem; font-weight: 700; color: var(--text-2); }
+.cp-fin   { font-size: 0.75rem; font-weight: 600; color: var(--text-3); }
+.cp-vivo  { display: inline-flex; align-items: center; gap: 5px;
+  font-size: 0.75rem; font-weight: 700; color: var(--red); letter-spacing: 0.04em; }
+
+.canal-partido-liga {
+  display: flex; align-items: center; gap: 6px; min-width: 0;
+}
+.cp-liga-logo { width: 16px; height: 16px; object-fit: contain; flex-shrink: 0; }
+.cp-liga-nombre {
+  font-size: 0.72rem; color: var(--text-3); font-weight: 500;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+
+.canal-partido-equipos {
+  display: flex; align-items: center; gap: 8px; min-width: 0;
+}
+.cp-equipo {
+  display: flex; align-items: center; gap: 5px; flex: 1; min-width: 0;
+}
+.cp-equipo img { width: 20px; height: 20px; object-fit: contain; flex-shrink: 0; }
+.cp-equipo span {
+  font-size: 0.85rem; font-weight: 600; color: var(--text-1);
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.cp-equipo strong { font-size: 1rem; font-weight: 800; color: var(--text-1); flex-shrink: 0; }
+.cp-vs { font-size: 0.75rem; color: var(--text-3); flex-shrink: 0; }
+
+.canal-partido-ver { display: flex; justify-content: flex-end; }
+.cp-ver-btn {
+  display: inline-flex; align-items: center; gap: 5px;
+  background: var(--gradient); color: #fff;
+  font-size: 0.8rem; font-weight: 600; padding: 6px 14px;
+  border-radius: var(--r-pill); text-decoration: none;
+  transition: opacity var(--t-fast) var(--ease);
+}
+.cp-ver-btn:hover { opacity: 0.85; }
+
+@media (max-width: 600px) {
+  .canal-partido-row {
+    grid-template-columns: 54px 1fr auto;
+    grid-template-rows: auto auto;
+  }
+  .canal-partido-liga { display: none; }
+  .canal-partido-equipos { grid-column: 1 / span 3; }
 }
 
 /* ─── MUNDIAL (identidad propia) ────────────────────────────── */

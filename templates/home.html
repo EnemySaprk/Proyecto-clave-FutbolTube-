@@ -2,11 +2,33 @@
 
 {% block contenido %}
 
+<!-- VIVO AHORA — solo si hay partidos en curso -->
+{% if partidos_vivo %}
+<div class="vivo-banner">
+    <div class="vivo-banner-inner">
+        <span class="vivo-badge-live"><span class="cp-pulse"></span> EN VIVO</span>
+        <div class="vivo-scroll">
+            {% for p in partidos_vivo %}
+            <span class="vivo-item">
+                {% if p.equipo_local_logo %}<img src="{{ p.equipo_local_logo }}" alt="">{% endif %}
+                {{ p.equipo_local }}
+                <strong class="vivo-score">{{ p.goles_local|default:"—" }} – {{ p.goles_visitante|default:"—" }}</strong>
+                {{ p.equipo_visitante }}
+                {% if p.equipo_visitante_logo %}<img src="{{ p.equipo_visitante_logo }}" alt="">{% endif %}
+            </span>
+            {% if not forloop.last %}<span class="vivo-sep">·</span>{% endif %}
+            {% endfor %}
+        </div>
+        <a href="{% url 'canales:agenda' %}" class="vivo-ver-todos">Ver todos <i class="bi bi-chevron-right"></i></a>
+    </div>
+</div>
+{% endif %}
+
 <!-- HERO SLIDER -->
 <section class="hero-slider" id="heroSliderSection">
     <div class="slider-track" id="heroSlider">
         {% for banner in banners %}
-        <div class="slide {% if forloop.first %}active{% endif %}">
+        <div class="slide {% if forloop.first %}active{% endif %}" style="background-image: url('{{ banner.imagen.url }}')">
             <img src="{{ banner.imagen.url }}" alt="{{ banner.titulo }}">
             <div class="slide-gradient"></div>
             <div class="slide-content">
@@ -36,71 +58,105 @@
 
 <!-- PARTIDOS DE HOY -->
 {% if partidos_hoy %}
-<section class="channel-section mb-4">
-    <div class="channel-header">
-        <a href="{% url 'canales:agenda' %}" class="channel-header-link">
-            <span class="channel-icon" style="background: linear-gradient(135deg, #e60000, #990000);"><i class="bi bi-calendar-event-fill"></i></span>
-            <h5 class="channel-name">Partidos de Hoy</h5>
-            <i class="bi bi-chevron-right channel-arrow"></i>
-        </a>
+<section class="home-partidos-section">
+    <div class="home-partidos-header">
+        <div class="home-partidos-title-wrap">
+            <span class="home-partidos-icon"><i class="bi bi-calendar-event-fill"></i></span>
+            <h5 class="home-partidos-title">Partidos de hoy</h5>
+        </div>
+        <span id="js-live-ts" class="live-ts"></span>
+        <a href="{% url 'canales:agenda' %}" class="home-partidos-agenda-link">Agenda <i class="bi bi-arrow-right"></i></a>
     </div>
-    <div class="carousel-wrapper">
-        <button class="carousel-btn carousel-btn-left" onclick="scrollCarousel(this, -1)"><i class="bi bi-chevron-left"></i></button>
-        <div class="carousel-track">
-            {% for partido in partidos_hoy %}
-            <div class="home-match-card" onclick="toggleHomeCanales(this)">
-                <div class="home-match-time">
-                    {% if partido.estado == 'NS' %}
-                        {{ partido.hora|time:'H:i' }}
-                    {% elif partido.estado == 'FT' %}
-                        <span style="color: #5a7a9a;">FIN</span>
-                    {% else %}
-                        <span style="color: #e60000;"><i class="bi bi-broadcast"></i> VIVO</span>
-                    {% endif %}
-                </div>
-                <div class="home-match-liga">
-                    {% if partido.liga_logo %}
-                    <img src="{{ partido.liga_logo }}" alt="{{ partido.liga_nombre }}">
-                    {% endif %}
-                    <span>{{ partido.liga_nombre }}</span>
-                </div>
-                <div class="home-match-teams">
-                    <div class="home-match-team">
-                        {% if partido.equipo_local_logo %}
-                        <img src="{{ partido.equipo_local_logo }}" alt="{{ partido.equipo_local }}">
-                        {% endif %}
-                        <span>{{ partido.equipo_local }}</span>
-                        {% if partido.goles_local != None %}
-                        <strong>{{ partido.goles_local }}</strong>
-                        {% endif %}
-                    </div>
-                    <div class="home-match-team">
-                        {% if partido.equipo_visitante_logo %}
-                        <img src="{{ partido.equipo_visitante_logo }}" alt="{{ partido.equipo_visitante }}">
-                        {% endif %}
-                        <span>{{ partido.equipo_visitante }}</span>
-                        {% if partido.goles_visitante != None %}
-                        <strong>{{ partido.goles_visitante }}</strong>
-                        {% endif %}
-                    </div>
-                </div>
-                {% if partido.canales_transmision %}
-                <div class="home-match-channels">
-                    {% for video in partido.canales_transmision %}
-                    <a href="{% url 'canales:detalle_video' video.pk %}" class="home-match-ch" onclick="event.stopPropagation();">
-                        {% if video.canal.logo %}
-                        <img src="{{ video.canal.logo.url }}" alt="{{ video.titulo }}" title="{{ video.titulo }}">
-                        {% else %}
-                        <span title="{{ video.titulo }}">{{ video.titulo|truncatechars:8 }}</span>
-                        {% endif %}
-                    </a>
-                    {% endfor %}
-                </div>
+    <div class="home-partidos-list">
+        {% for partido in partidos_hoy %}
+        {% with canales=partido.canales_transmision %}
+        {% if canales %}
+        {# ── Tiene canales: fila interactiva con chips ── #}
+        <div class="hpl-row {% if partido.estado != 'NS' and partido.estado != 'FT' and partido.estado != 'AET' and partido.estado != 'PEN' %}hpl-row--vivo{% endif %}"
+             data-api-id="{{ partido.api_id }}"
+             data-estado="{{ partido.estado }}"
+             data-hora="{{ partido.hora|time:'H:i' }}"
+             data-context="home">
+            <div class="hpl-estado">
+                {% if partido.estado == 'NS' %}
+                    <span class="hpl-hora">{{ partido.hora|time:'H:i' }}</span>
+                {% elif partido.estado == 'FT' or partido.estado == 'AET' or partido.estado == 'PEN' %}
+                    <span class="hpl-fin">FIN</span>
+                {% else %}
+                    <span class="hpl-vivo"><span class="cp-pulse"></span><span class="js-minuto">{% if partido.minuto %}{{ partido.minuto }}'{% elif partido.estado == 'HT' %}ET{% endif %}</span></span>
                 {% endif %}
             </div>
-            {% endfor %}
+            <div class="hpl-liga">
+                {% if partido.liga_logo %}<img src="{{ partido.liga_logo }}" alt="" class="hpl-liga-logo">{% endif %}
+                <span class="hpl-liga-nombre">{{ partido.liga_nombre }}</span>
+            </div>
+            <div class="hpl-equipos">
+                <div class="hpl-equipo">
+                    {% if partido.equipo_local_logo %}<img src="{{ partido.equipo_local_logo }}" alt="" class="hpl-eq-logo">{% endif %}
+                    <span class="hpl-eq-nombre">{{ partido.equipo_local }}</span>
+                </div>
+                <div class="hpl-marcador">
+                    <span class="js-score {% if partido.goles_local == None %}hpl-marcador-ns{% endif %}">
+                        {% if partido.goles_local != None %}{{ partido.goles_local }} – {{ partido.goles_visitante }}{% else %}vs{% endif %}
+                    </span>
+                </div>
+                <div class="hpl-equipo hpl-equipo--right">
+                    <span class="hpl-eq-nombre">{{ partido.equipo_visitante }}</span>
+                    {% if partido.equipo_visitante_logo %}<img src="{{ partido.equipo_visitante_logo }}" alt="" class="hpl-eq-logo">{% endif %}
+                </div>
+            </div>
+            <div class="hpl-canales-preview">
+                {% for video in canales %}{% if forloop.counter <= 3 %}
+                <a href="{% url 'canales:detalle_video' video.pk %}" class="hpl-canal-chip" title="{{ video.titulo }}">
+                    {% if video.canal.logo %}<img src="{{ video.canal.logo.url }}" alt="{{ video.titulo }}">
+                    {% else %}<i class="bi bi-tv-fill"></i>{% endif %}
+                </a>
+                {% endif %}{% endfor %}
+            </div>
         </div>
-        <button class="carousel-btn carousel-btn-right" onclick="scrollCarousel(this, 1)"><i class="bi bi-chevron-right"></i></button>
+        {% else %}
+        {# ── Sin canales: fila entera lleva a la agenda ── #}
+        <a href="{% url 'canales:agenda' %}?fecha={{ partido.fecha|date:'Y-m-d' }}"
+           class="hpl-row hpl-row--sin-canal {% if partido.estado != 'NS' and partido.estado != 'FT' and partido.estado != 'AET' and partido.estado != 'PEN' %}hpl-row--vivo{% endif %}"
+           data-api-id="{{ partido.api_id }}"
+           data-estado="{{ partido.estado }}"
+           data-hora="{{ partido.hora|time:'H:i' }}"
+           data-context="home">
+            <div class="hpl-estado">
+                {% if partido.estado == 'NS' %}
+                    <span class="hpl-hora">{{ partido.hora|time:'H:i' }}</span>
+                {% elif partido.estado == 'FT' or partido.estado == 'AET' or partido.estado == 'PEN' %}
+                    <span class="hpl-fin">FIN</span>
+                {% else %}
+                    <span class="hpl-vivo"><span class="cp-pulse"></span><span class="js-minuto">{% if partido.minuto %}{{ partido.minuto }}'{% elif partido.estado == 'HT' %}ET{% endif %}</span></span>
+                {% endif %}
+            </div>
+            <div class="hpl-liga">
+                {% if partido.liga_logo %}<img src="{{ partido.liga_logo }}" alt="" class="hpl-liga-logo">{% endif %}
+                <span class="hpl-liga-nombre">{{ partido.liga_nombre }}</span>
+            </div>
+            <div class="hpl-equipos">
+                <div class="hpl-equipo">
+                    {% if partido.equipo_local_logo %}<img src="{{ partido.equipo_local_logo }}" alt="" class="hpl-eq-logo">{% endif %}
+                    <span class="hpl-eq-nombre">{{ partido.equipo_local }}</span>
+                </div>
+                <div class="hpl-marcador">
+                    <span class="js-score {% if partido.goles_local == None %}hpl-marcador-ns{% endif %}">
+                        {% if partido.goles_local != None %}{{ partido.goles_local }} – {{ partido.goles_visitante }}{% else %}vs{% endif %}
+                    </span>
+                </div>
+                <div class="hpl-equipo hpl-equipo--right">
+                    <span class="hpl-eq-nombre">{{ partido.equipo_visitante }}</span>
+                    {% if partido.equipo_visitante_logo %}<img src="{{ partido.equipo_visitante_logo }}" alt="" class="hpl-eq-logo">{% endif %}
+                </div>
+            </div>
+            <div class="hpl-sin-canal">
+                <i class="bi bi-calendar3"></i>
+            </div>
+        </a>
+        {% endif %}
+        {% endwith %}
+        {% endfor %}
     </div>
 </section>
 {% endif %}
@@ -188,6 +244,7 @@ function scrollCarousel(btn, direction) {
     var track = btn.parentElement.querySelector('.carousel-track');
     track.scrollBy({ left: track.clientWidth * 0.75 * direction, behavior: 'smooth' });
 }
+
 
 (function() {
     var slides = document.querySelectorAll('#heroSlider .slide');

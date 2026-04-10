@@ -21,4 +21,5 @@ urlpatterns = [
     path('api/ligas/', api_views.ligas_list, name='api_ligas'),
     path('api/partidos/', api_views.partidos_list, name='api_partidos'),
     path('api/partidos/hoy/', api_views.partidos_hoy, name='api_partidos_hoy'),
+    path('api/partidos/live/', api_views.partidos_live, name='api_partidos_live'),
 ]

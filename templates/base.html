@@ -354,10 +354,10 @@
          ═══════════════════════════════════════════════ */
       .hero-slider {
         position: relative;
-        width: 100%;
         height: 520px;
         overflow: hidden;
-        margin-bottom: 30px;
+        margin: 16px 20px 30px;
+        border-radius: 20px;
       }
       .hero-slider-page {
         height: 420px;
@@ -383,11 +383,24 @@
         z-index: 2;
         pointer-events: auto;
       }
+      .slide::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: inherit;
+        background-size: cover;
+        background-position: center;
+        filter: blur(24px) brightness(0.45);
+        transform: scale(1.08);
+        z-index: 0;
+      }
       .slide img {
+        position: relative;
         width: 100%;
         height: 100%;
-        object-fit: cover;
-        object-position: center top;
+        object-fit: contain;
+        object-position: center center;
+        z-index: 1;
       }
       .slide-gradient {
         position: absolute;
@@ -395,26 +408,28 @@
         left: 0;
         right: 0;
         bottom: 0;
+        z-index: 2;
         background:
           linear-gradient(
             0deg,
-            var(--bg-body) 0%,
-            rgba(0, 0, 0, 0.5) 30%,
-            rgba(0, 0, 0, 0) 60%
+            rgba(0, 0, 0, 0.82) 0%,
+            rgba(0, 0, 0, 0.35) 45%,
+            rgba(0, 0, 0, 0) 72%
           ),
           linear-gradient(
             90deg,
-            rgba(0, 0, 0, 0.7) 0%,
-            rgba(0, 0, 0, 0.4) 30%,
-            rgba(0, 0, 0, 0) 55%
+            rgba(0, 0, 0, 0.55) 0%,
+            rgba(0, 0, 0, 0.2) 35%,
+            rgba(0, 0, 0, 0) 58%
           );
       }
       .slide-content {
         position: absolute;
-        bottom: 80px;
-        left: 40px;
+        bottom: 28px;
+        left: 24px;
         z-index: 3;
         max-width: 500px;
+        pointer-events: none;
       }
       .slide-logo {
         width: 50px;
@@ -431,12 +446,12 @@
         margin-bottom: 12px;
       }
       .slide-title {
-        font-size: 2.2rem;
+        font-size: 1.6rem;
         font-weight: 800;
         color: #fff;
-        text-shadow: 0 2px 20px rgba(0, 0, 0, 0.5);
-        line-height: 1.1;
-        margin-bottom: 10px;
+        text-shadow: 0 2px 12px rgba(0, 0, 0, 0.6);
+        line-height: 1.15;
+        margin-bottom: 8px;
       }
       .slide-desc {
         font-size: 0.95rem;
@@ -517,17 +532,18 @@
         border-color: #0082e6;
       }
       .slider-arrow-left {
-        left: 16px;
+        left: 14px;
       }
       .slider-arrow-right {
-        right: 16px;
+        right: 14px;
       }
 
       /* Dots del slider */
       .slider-dots {
         position: absolute;
-        bottom: 24px;
-        left: 40px;
+        bottom: 14px;
+        left: 50%;
+        transform: translateX(-50%);
         z-index: 5;
         display: flex;
         gap: 6px;
@@ -1634,21 +1650,23 @@
         }
 
         .hero-slider {
-          height: 280px;
+          height: 220px;
+          margin: 12px 12px 20px;
+          border-radius: 16px;
         }
         .hero-slider-page {
-          height: 240px;
+          height: 200px;
         }
         .slide-content {
-          bottom: 60px;
+          bottom: 18px;
           left: 16px;
-          max-width: 70%;
+          max-width: 75%;
         }
         .slide-title {
-          font-size: 1.3rem;
+          font-size: 1.1rem;
         }
         .slide-desc {
-          font-size: 0.8rem;
+          font-size: 0.78rem;
           -webkit-line-clamp: 2;
         }
         .slide-logo {
@@ -1660,13 +1678,12 @@
           font-size: 0.8rem;
         }
         .slider-arrow {
-          width: 34px;
-          height: 34px;
-          font-size: 1rem;
+          width: 32px;
+          height: 32px;
+          font-size: 0.9rem;
         }
         .slider-dots {
-          left: 16px;
-          bottom: 16px;
+          bottom: 10px;
         }
         .slide-fallback .hero-title {
           font-size: 2rem;
@@ -1943,6 +1960,168 @@
 
       // Sincronizar icono al cargar (el tema ya fue aplicado en <head>)
       updateThemeIcons();
+    </script>
+
+    <!-- ═══════════════════════════════════════════
+         POLLING TIEMPO REAL — partidos de hoy
+         Solo activo si hay filas [data-api-id] en la página
+         ═══════════════════════════════════════════ -->
+    <script>
+    (function () {
+      var ESTADOS_VIVO = { '1H':1, '2H':1, 'HT':1, 'ET':1, 'BT':1, 'P':1, 'LIVE':1 };
+      var ESTADOS_FIN  = { 'FT':1, 'AET':1, 'PEN':1, 'SUSP':1, 'PST':1, 'CANC':1 };
+      var POLL_VIVO = 45000;   // 45 s si hay partido en curso
+      var POLL_IDLE = 180000;  // 3 min si no
+      var timer = null;
+      var tsEl = document.getElementById('js-live-ts');
+
+      function rows() {
+        return document.querySelectorAll('[data-api-id]');
+      }
+
+      function anyLive() {
+        var r = rows();
+        for (var i = 0; i < r.length; i++) {
+          if (ESTADOS_VIVO[r[i].dataset.estado]) return true;
+        }
+        return false;
+      }
+
+      function flash(el) {
+        el.classList.add('live-flash');
+        setTimeout(function () { el.classList.remove('live-flash'); }, 700);
+      }
+
+      /* ── Actualizar fila del HOME ── */
+      function updateHome(row, p) {
+        var estadoDiv = row.querySelector('.hpl-estado');
+        var scoreEl   = row.querySelector('.js-score');
+        var isVivo    = !!ESTADOS_VIVO[p.estado];
+        var isFin     = !!ESTADOS_FIN[p.estado];
+        var isHT      = p.estado === 'HT';
+
+        // Estado badge
+        if (p.estado !== row.dataset.estado) {
+          if (isVivo || isHT) {
+            var minStr = isHT ? 'ET' : (p.minuto ? p.minuto + "'" : 'VIVO');
+            estadoDiv.innerHTML = '<span class="hpl-vivo"><span class="cp-pulse"></span><span class="js-minuto">' + minStr + '</span></span>';
+          } else if (isFin) {
+            estadoDiv.innerHTML = '<span class="hpl-fin">FIN</span>';
+          }
+          row.classList.toggle('hpl-row--vivo', isVivo || isHT);
+        } else if ((isVivo || isHT) && p.minuto !== undefined) {
+          // Solo actualizar el minuto sin re-renderizar todo
+          var minEl = estadoDiv.querySelector('.js-minuto');
+          if (minEl) {
+            var minStr = isHT ? 'ET' : (p.minuto ? p.minuto + "'" : 'VIVO');
+            if (minEl.textContent !== minStr) minEl.textContent = minStr;
+          }
+        }
+
+        // Marcador
+        if (scoreEl) {
+          var gl = p.goles_local, gv = p.goles_visitante;
+          var nuevo = (gl !== null && gl !== undefined) ? (gl + ' \u2013 ' + gv) : 'vs';
+          if (scoreEl.textContent.trim() !== nuevo) {
+            scoreEl.textContent = nuevo;
+            scoreEl.className = 'js-score' + ((gl === null || gl === undefined) ? ' hpl-marcador-ns' : '');
+            flash(scoreEl);
+          }
+        }
+
+        row.dataset.estado = p.estado;
+      }
+
+      /* ── Actualizar fila de la AGENDA ── */
+      function updateAgenda(row, p) {
+        var horaDiv  = row.querySelector('.agenda-hora');
+        var golLocal = row.querySelector('.js-gol-local');
+        var golVisit = row.querySelector('.js-gol-visitante');
+        var isVivo   = !!ESTADOS_VIVO[p.estado];
+        var isFin    = !!ESTADOS_FIN[p.estado];
+        var isHT2    = p.estado === 'HT';
+
+        if (p.estado !== row.dataset.estado) {
+          if (horaDiv) {
+            if (isHT2) {
+              horaDiv.innerHTML = '<span class="agenda-envivo agenda-envivo--ht"><span class="cp-pulse"></span> <span class="js-minuto">ET</span></span>';
+            } else if (isVivo) {
+              var minStr2 = p.minuto ? p.minuto + "'" : 'VIVO';
+              horaDiv.innerHTML = '<span class="agenda-envivo"><span class="cp-pulse"></span> <span class="js-minuto">' + minStr2 + '</span></span>';
+            } else if (isFin) {
+              horaDiv.innerHTML = '<span class="agenda-finalizado">FIN</span>';
+            }
+          }
+        } else if ((isVivo || isHT2) && p.minuto !== undefined) {
+          var minEl2 = horaDiv ? horaDiv.querySelector('.js-minuto') : null;
+          if (minEl2) {
+            var m2 = isHT2 ? 'ET' : (p.minuto ? p.minuto + "'" : 'VIVO');
+            if (minEl2.textContent !== m2) minEl2.textContent = m2;
+          }
+        }
+
+        var gl = p.goles_local, gv = p.goles_visitante;
+        var glStr = (gl !== null && gl !== undefined) ? String(gl) : '';
+        var gvStr = (gv !== null && gv !== undefined) ? String(gv) : '';
+
+        if (golLocal && golLocal.textContent !== glStr) {
+          golLocal.textContent = glStr;
+          flash(golLocal);
+        }
+        if (golVisit && golVisit.textContent !== gvStr) {
+          golVisit.textContent = gvStr;
+          flash(golVisit);
+        }
+
+        row.dataset.estado = p.estado;
+      }
+
+      function poll() {
+        fetch('/api/partidos/live/')
+          .then(function (r) { return r.json(); })
+          .then(function (data) {
+            var mapa = {};
+            data.forEach(function (p) { mapa[p.api_id] = p; });
+
+            rows().forEach(function (row) {
+              var id = parseInt(row.dataset.apiId, 10);
+              if (!mapa[id]) return;
+              var ctx = row.dataset.context;
+              if (ctx === 'home') updateHome(row, mapa[id]);
+              else if (ctx === 'agenda') updateAgenda(row, mapa[id]);
+            });
+
+            // Timestamp
+            if (tsEl) {
+              tsEl.textContent = 'act. ' + new Date().toLocaleTimeString('es-CO', {hour:'2-digit', minute:'2-digit', second:'2-digit'});
+            }
+
+            schedule();
+          })
+          .catch(function () {
+            timer = setTimeout(poll, 120000); // reintento en 2 min si falla
+          });
+      }
+
+      function schedule() {
+        clearTimeout(timer);
+        timer = setTimeout(poll, anyLive() ? POLL_VIVO : POLL_IDLE);
+      }
+
+      // No arrancar si no hay filas en esta página
+      if (!rows().length) return;
+
+      // Pausar si la pestaña está oculta, reanudar al volver
+      document.addEventListener('visibilitychange', function () {
+        if (document.hidden) {
+          clearTimeout(timer);
+        } else {
+          poll(); // actualización inmediata al volver a la pestaña
+        }
+      });
+
+      schedule();
+    })();
     </script>
   </body>
 </html>

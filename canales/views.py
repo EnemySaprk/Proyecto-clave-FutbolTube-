@@ -9,6 +9,9 @@ from .models import Liga, Canal, Video, BannerImagen, Partido
 # ──────────────────────────────────────────────────────────────
 # HOME
 # ──────────────────────────────────────────────────────────────
+ESTADOS_VIVO = {'1H', '2H', 'HT', 'ET', 'P', 'LIVE'}
+
+
 def home(request):
     banners = BannerImagen.objects.filter(activo=True, canal__isnull=True, liga__isnull=True)
     if not banners.exists():
@@ -37,13 +40,15 @@ def home(request):
         if videos.exists():
             ligas_con_videos.append({'liga': liga, 'videos': videos})
 
-    partidos_hoy = Partido.objects.filter(fecha=date.today()).order_by('hora')[:12]
+    partidos_hoy = list(Partido.objects.filter(fecha=date.today()).order_by('hora')[:20])
+    partidos_vivo = [p for p in partidos_hoy if p.estado in ESTADOS_VIVO]
 
     context = {
         'banners': banners,
         'canales_con_videos': canales_con_videos,
         'ligas_con_videos': ligas_con_videos,
         'partidos_hoy': partidos_hoy,
+        'partidos_vivo': partidos_vivo,
     }
     return render(request, 'home.html', context)
 
@@ -75,6 +80,8 @@ def detalle_video(request, pk):
 # CANAL
 # ──────────────────────────────────────────────────────────────
 def lista_canal(request, slug):
+    from .models import MapeoLigaCanal
+
     canal = get_object_or_404(Canal, slug=slug, activo=True)
     banners = BannerImagen.objects.filter(canal=canal, activo=True)
     videos = (
@@ -84,7 +91,45 @@ def lista_canal(request, slug):
         .prefetch_related('ligas')
     )
 
-    context = {'canal': canal, 'banners': banners, 'videos': videos}
+    # ── Partidos de hoy transmitidos por este canal ──────────────
+    partidos_hoy_canal = []
+    canal_video_ids = set(videos.values_list('id', flat=True))
+
+    if canal_video_ids:
+        # Liga IDs que mapean a videos de este canal
+        liga_api_ids = set(
+            MapeoLigaCanal.objects.filter(canales__in=canal_video_ids, activo=True)
+            .values_list('liga_api_id', flat=True)
+        )
+        # Títulos de los videos de este canal (para formato bolaloca nuevo)
+        video_titles = set(videos.values_list('titulo', flat=True))
+        # Números bolaloca de los videos de este canal (para formato bolaloca viejo)
+        bolaloca_nums = set(
+            videos.filter(bolaloca_canal__isnull=False)
+            .values_list('bolaloca_canal__numero', flat=True)
+        )
+
+        hoy = date.today()
+        for partido in Partido.objects.filter(fecha=hoy).order_by('hora'):
+            if partido.canales_bolaloca:
+                valores = [v.strip() for v in partido.canales_bolaloca.split(',') if v.strip()]
+                if valores:
+                    if valores[0].isdigit():
+                        nums = {int(n) for n in valores if n.isdigit()}
+                        if nums & bolaloca_nums:
+                            partidos_hoy_canal.append(partido)
+                    else:
+                        if set(valores) & video_titles:
+                            partidos_hoy_canal.append(partido)
+            elif partido.liga_api_id in liga_api_ids:
+                partidos_hoy_canal.append(partido)
+
+    context = {
+        'canal': canal,
+        'banners': banners,
+        'videos': videos,
+        'partidos_hoy_canal': partidos_hoy_canal,
+    }
     return render(request, 'canal.html', context)
 
 
