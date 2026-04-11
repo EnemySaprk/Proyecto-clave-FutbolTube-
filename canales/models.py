@@ -303,6 +303,10 @@ class Partido(models.Model):
         return f'{self.equipo_local} vs {self.equipo_visitante} ({self.liga_nombre})'
 
     @property
+    def es_vivo(self):
+        return self.estado in {'1H', '2H', 'HT', 'ET', 'P', 'LIVE'}
+
+    @property
     def canales_transmision(self):
         from canales.models import Video, MapeoLigaCanal
 

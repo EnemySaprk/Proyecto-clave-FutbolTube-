@@ -80,12 +80,6 @@
             <div class="agenda-ver">
                 {% if canales %}
                     <span class="agenda-ver-btn"><i class="bi bi-play-circle-fill"></i> Ver</span>
-                {% elif request.user.is_staff %}
-                    <a href="/admin/canales/partido/{{ partido.pk }}/change/"
-                       onclick="event.stopPropagation();"
-                       class="agenda-edit-btn" title="Asignar canales">
-                        <i class="bi bi-plus-circle"></i>
-                    </a>
                 {% endif %}
             </div>
         </div>
@@ -114,11 +108,6 @@
                 </a>
                 {% endfor %}
             </div>
-            {% if request.user.is_staff %}
-            <a href="/admin/canales/partido/{{ partido.pk }}/change/" class="agenda-edit-link">
-                <i class="bi bi-pencil"></i> Editar canales
-            </a>
-            {% endif %}
         </div>
         {% endif %}
         {% endwith %}

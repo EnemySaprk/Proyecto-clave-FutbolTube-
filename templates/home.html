@@ -188,7 +188,7 @@
                     {% endif %}
                     <div class="card-overlay"><i class="bi bi-play-circle-fill play-icon"></i></div>
                     {% if video.partido_ahora %}
-                        {% if video.partido_ahora.estado in 'ESTADOS_VIVO' %}
+                        {% if video.partido_ahora.es_vivo %}
                         <span class="live-badge"><i class="bi bi-broadcast"></i> EN VIVO</span>
                         {% endif %}
                     {% elif video.destacado %}
@@ -197,7 +197,7 @@
                     {% if video.partido_ahora %}
                     <div class="card-now-playing">
                         {% with p=video.partido_ahora %}
-                        {% if p.estado in 'ESTADOS_VIVO' %}
+                        {% if p.es_vivo %}
                         <span class="cnp-badge cnp-live"><span class="cp-pulse"></span>VIVO</span>
                         {% else %}
                         <span class="cnp-badge cnp-next">{{ p.hora|time:"H:i" }}</span>
@@ -245,7 +245,7 @@
                     {% if video.partido_ahora %}
                     <div class="card-now-playing">
                         {% with p=video.partido_ahora %}
-                        {% if p.estado in 'ESTADOS_VIVO' %}
+                        {% if p.es_vivo %}
                         <span class="cnp-badge cnp-live"><span class="cp-pulse"></span>VIVO</span>
                         {% else %}
                         <span class="cnp-badge cnp-next">{{ p.hora|time:"H:i" }}</span>
