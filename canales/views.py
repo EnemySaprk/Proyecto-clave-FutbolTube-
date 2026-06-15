@@ -445,8 +445,12 @@ def mundial(request):
             activo=True,
             liga_nombre__icontains='fifa'
         )
+        video_pks_vistos = set()
         for mapeo in mapeos:
             for video in mapeo.canales.filter(activo=True).select_related('canal'):
+                if video.pk in video_pks_vistos:
+                    continue
+                video_pks_vistos.add(video.pk)
                 canal = video.canal
                 if canal.nombre not in canales_mundial:
                     canales_mundial[canal.nombre] = {

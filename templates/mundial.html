@@ -1,457 +1,473 @@
-﻿{% extends 'base.html' %} {% load static %} {% block titulo %}Copa Mundial FIFA
-2026 - DepTV{% endblock %} {% block contenido %}
+{% extends 'base.html' %} {% load static %} {% block titulo %}Copa Mundial FIFA 2026 - DepTV{% endblock %} {% block contenido %}
 <style>
-  /* ================================================
-     MUNDIAL 2026 — DISEÑO OFICIAL
-     ================================================ */
+  /* ── MUNDIAL 2026 — FIFA 2026 OFFICIAL STYLE ── */
   .wm {
     --mx: #3cac3b;
     --us: #4a5fd4;
     --ca: #e61d25;
     --gold: #d4af37;
-    --bg: #070e16;
-    --card: rgba(255, 255, 255, 0.04);
-    --border: rgba(255, 255, 255, 0.08);
+    --lime: #c8e34f;
+    --purple: #7b2fbe;
+    --bg: #08080f;
+    --card: rgba(255,255,255,0.04);
+    --border: rgba(255,255,255,0.08);
     background: var(--bg);
     color: #fff;
     min-height: 100vh;
     font-family: system-ui, sans-serif;
   }
 
-  /* ── HERO ─────────────────────────────────────── */
+  /* ── HERO ── */
   .wm-hero {
     position: relative;
-    background: #0a0e14;
+    background: #08080f;
+    min-height: 560px;
     overflow: hidden;
+    display: flex;
+    align-items: center;
   }
-  @keyframes heroBgShift {
-    0%,
-    100% {
-      background:
-        radial-gradient(
-          ellipse 500px 400px at 15% 60%,
-          rgba(60, 172, 59, 0.22) 0%,
-          transparent 70%
-        ),
-        radial-gradient(
-          ellipse 400px 300px at 85% 25%,
-          rgba(230, 29, 37, 0.06) 0%,
-          transparent 70%
-        ),
-        radial-gradient(
-          ellipse 400px 300px at 55% 90%,
-          rgba(42, 57, 141, 0.06) 0%,
-          transparent 70%
-        );
-    }
-    33% {
-      background:
-        radial-gradient(
-          ellipse 400px 300px at 20% 40%,
-          rgba(60, 172, 59, 0.06) 0%,
-          transparent 70%
-        ),
-        radial-gradient(
-          ellipse 500px 400px at 80% 50%,
-          rgba(230, 29, 37, 0.22) 0%,
-          transparent 70%
-        ),
-        radial-gradient(
-          ellipse 400px 300px at 50% 80%,
-          rgba(42, 57, 141, 0.06) 0%,
-          transparent 70%
-        );
-    }
-    66% {
-      background:
-        radial-gradient(
-          ellipse 400px 300px at 25% 50%,
-          rgba(60, 172, 59, 0.06) 0%,
-          transparent 70%
-        ),
-        radial-gradient(
-          ellipse 400px 300px at 75% 30%,
-          rgba(230, 29, 37, 0.06) 0%,
-          transparent 70%
-        ),
-        radial-gradient(
-          ellipse 500px 400px at 50% 70%,
-          rgba(42, 57, 141, 0.22) 0%,
-          transparent 70%
-        );
-    }
+
+  /* Organic blob shapes */
+  .wm-blobs {
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 58%;
+    height: 100%;
+    pointer-events: none;
   }
-  .wm-hero-bg {
+  .wm-blob {
+    position: absolute;
+  }
+  .wm-blob-1 {
+    background: #3cac3b;
+    width: 300px; height: 300px;
+    border-radius: 63% 37% 54% 46% / 55% 48% 52% 45%;
+    top: -20px; right: 12%;
+    opacity: 0.92;
+  }
+  .wm-blob-2 {
+    background: #2a398d;
+    width: 250px; height: 250px;
+    border-radius: 40% 60% 70% 30% / 60% 30% 70% 40%;
+    top: 90px; right: 38%;
+    opacity: 0.88;
+  }
+  .wm-blob-3 {
+    background: #e61d25;
+    width: 220px; height: 220px;
+    border-radius: 73% 27% 40% 60% / 45% 55% 45% 55%;
+    top: 220px; right: 6%;
+    opacity: 0.9;
+  }
+  .wm-blob-4 {
+    background: #c8e34f;
+    width: 175px; height: 175px;
+    border-radius: 50% 50% 30% 70% / 60% 40% 60% 40%;
+    bottom: -15px; right: 30%;
+    opacity: 0.88;
+  }
+  .wm-blob-5 {
+    background: #7b2fbe;
+    width: 205px; height: 205px;
+    border-radius: 30% 70% 60% 40% / 50% 40% 60% 50%;
+    bottom: 20px; right: 0%;
+    opacity: 0.85;
+  }
+  .wm-blobs-overlay {
     position: absolute;
     inset: 0;
-    pointer-events: none;
-    animation: heroBgShift 18s ease-in-out infinite;
+    background: linear-gradient(90deg, #08080f 28%, rgba(8,8,15,0.72) 58%, rgba(8,8,15,0.25) 100%);
   }
-  @keyframes heroBgShift {
-    0%,
-    100% {
-      background:
-        radial-gradient(
-          circle at 15% 60%,
-          rgba(60, 172, 59, 0.25) 0%,
-          transparent 50%
-        ),
-        radial-gradient(
-          circle at 85% 25%,
-          rgba(230, 29, 37, 0.08) 0%,
-          transparent 45%
-        ),
-        radial-gradient(
-          circle at 55% 90%,
-          rgba(42, 57, 141, 0.08) 0%,
-          transparent 40%
-        );
-    }
-    33% {
-      background:
-        radial-gradient(
-          circle at 15% 60%,
-          rgba(60, 172, 59, 0.08) 0%,
-          transparent 50%
-        ),
-        radial-gradient(
-          circle at 85% 25%,
-          rgba(230, 29, 37, 0.25) 0%,
-          transparent 45%
-        ),
-        radial-gradient(
-          circle at 55% 90%,
-          rgba(42, 57, 141, 0.08) 0%,
-          transparent 40%
-        );
-    }
-    66% {
-      background:
-        radial-gradient(
-          circle at 15% 60%,
-          rgba(60, 172, 59, 0.08) 0%,
-          transparent 50%
-        ),
-        radial-gradient(
-          circle at 85% 25%,
-          rgba(230, 29, 37, 0.08) 0%,
-          transparent 45%
-        ),
-        radial-gradient(
-          circle at 55% 90%,
-          rgba(42, 57, 141, 0.25) 0%,
-          transparent 40%
-        );
-    }
-  }
-  .wm-hero-inner {
+
+  /* Hero content */
+  .wm-hero-content {
     position: relative;
     z-index: 2;
-    padding: 32px 24px 0;
+    padding: 60px 40px;
+    max-width: 580px;
   }
-  .wm-trophy-badge {
+  .wm-eyebrow {
+    font-size: 0.6rem;
+    font-weight: 800;
+    letter-spacing: 3.5px;
+    color: rgba(255,255,255,0.5);
+    text-transform: uppercase;
+    margin-bottom: 14px;
     display: flex;
     align-items: center;
     gap: 10px;
-    margin-bottom: 18px;
   }
-  .wm-trophy-icon {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    background: linear-gradient(135deg, #c8961e, #f5e27a, #c8961e);
+  .wm-eyebrow::before {
+    content: '';
+    display: inline-block;
+    width: 22px; height: 2px;
+    background: var(--mx);
+    border-radius: 1px;
+    flex-shrink: 0;
+  }
+  .wm-hero-title {
+    font-size: clamp(3.8rem, 11vw, 7rem);
+    font-weight: 900;
+    line-height: 0.88;
+    letter-spacing: -3px;
+    color: #fff;
+    text-transform: uppercase;
+    margin: 0;
+  }
+  .wm-hero-title .year {
+    display: block;
+    font-size: clamp(3.2rem, 9.5vw, 6.2rem);
+  }
+  .wm-hero-title .tm {
+    font-size: 0.32em;
+    vertical-align: super;
+    letter-spacing: 0;
+    opacity: 0.6;
+  }
+  .wm-hero-dates {
+    font-size: 0.82rem;
+    font-weight: 700;
+    color: var(--mx);
+    letter-spacing: 2px;
+    margin-top: 18px;
+    text-transform: uppercase;
+  }
+  .wm-hero-hosts {
     display: flex;
     align-items: center;
-    justify-content: center;
-    font-size: 20px;
+    gap: 8px;
+    margin-top: 8px;
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: rgba(255,255,255,0.65);
+    flex-wrap: wrap;
   }
-  .wm-badge-text {
-    font-size: 0.65rem;
-    font-weight: 800;
-    letter-spacing: 3px;
-    color: rgba(255, 255, 255, 0.45);
-    text-transform: uppercase;
+  .wm-host-dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    flex-shrink: 0;
   }
-
-  .wm-title {
-    font-size: clamp(3.5rem, 12vw, 6rem);
-    font-weight: 900;
-    line-height: 0.9;
-    letter-spacing: -3px;
-    background: linear-gradient(
-      135deg,
-      var(--mx) 0%,
-      #6ee07f 35%,
-      var(--gold) 65%,
-      var(--ca) 100%
-    );
-    background-size: 300% 300%;
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
-    animation: gradMove 8s ease infinite;
-  }
-  @keyframes gradMove {
-    0%,
-    100% {
-      background-position: 0% 50%;
-    }
-    50% {
-      background-position: 100% 50%;
-    }
-  }
-  .wm-subtitle {
-    font-size: 0.65rem;
-    letter-spacing: 4px;
-    color: rgba(255, 255, 255, 0.4);
-    margin-top: 6px;
-    text-transform: uppercase;
+  .wm-host-sep {
+    color: rgba(255,255,255,0.2);
   }
 
   /* Countdown */
   .wm-countdown {
     display: flex;
     gap: 8px;
-    margin: 20px 0 0;
+    margin-top: 24px;
     flex-wrap: wrap;
   }
   .wm-cd {
-    background: rgba(255, 255, 255, 0.06);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 10px;
-    padding: 8px 12px;
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 12px;
+    padding: 12px 16px;
     text-align: center;
-    min-width: 58px;
+    min-width: 66px;
   }
   .wm-cd-num {
-    font-size: 1.5rem;
+    font-size: 1.8rem;
     font-weight: 900;
-    color: var(--mx);
+    color: #fff;
     line-height: 1;
   }
   .wm-cd-label {
-    font-size: 0.5rem;
-    color: rgba(255, 255, 255, 0.35);
+    font-size: 0.46rem;
+    color: rgba(255,255,255,0.38);
     text-transform: uppercase;
-    letter-spacing: 1px;
-    margin-top: 2px;
+    letter-spacing: 1.5px;
+    margin-top: 3px;
   }
   .wm-cd-sep {
-    font-size: 1.4rem;
+    font-size: 1.6rem;
     font-weight: 900;
-    color: rgba(255, 255, 255, 0.2);
+    color: rgba(255,255,255,0.2);
     align-self: center;
-    padding-bottom: 14px;
+    padding-bottom: 18px;
   }
 
-  /* Hosts */
-  .wm-hosts {
+  /* CTA Buttons */
+  .wm-hero-ctas {
     display: flex;
-    gap: 8px;
+    gap: 12px;
+    margin-top: 28px;
     flex-wrap: wrap;
-    margin-top: 16px;
-    padding-bottom: 24px;
   }
-  .wm-host {
+  .wm-btn-primary {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: #7b2fbe;
+    color: #fff;
+    font-size: 0.8rem;
+    font-weight: 800;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    padding: 13px 24px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.2s;
+    font-family: inherit;
+  }
+  .wm-btn-primary:hover {
+    background: #9b3fde;
+    transform: translateY(-2px);
+  }
+  .wm-btn-outline {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: transparent;
+    color: #fff;
+    font-size: 0.8rem;
+    font-weight: 800;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    padding: 13px 24px;
+    border-radius: 8px;
+    border: 2px solid rgba(255,255,255,0.3);
+    cursor: pointer;
+    transition: all 0.2s;
+    font-family: inherit;
+  }
+  .wm-btn-outline:hover {
+    border-color: #fff;
+    background: rgba(255,255,255,0.08);
+  }
+
+  /* ── SECTION HEADER ── */
+  .wm-section-header {
+    padding: 36px 32px 16px;
+    display: flex;
+    align-items: baseline;
+    gap: 14px;
+  }
+  .wm-section-title {
+    font-size: 1.25rem;
+    font-weight: 900;
+    color: #fff;
+    text-transform: uppercase;
+    letter-spacing: -0.5px;
+  }
+  .wm-section-sub {
+    font-size: 0.7rem;
+    color: rgba(255,255,255,0.35);
+    font-weight: 600;
+    letter-spacing: 1px;
+  }
+
+  /* ── CANALES MUNDIAL ── */
+  .wm-canales-wrap {
+    padding: 0 32px 28px;
+  }
+  .wm-canales-row {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+  .wm-canal-item-group {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 18px;
+    min-width: 220px;
+    flex: 1;
+    max-width: 360px;
+    transition: all 0.25s;
+  }
+  .wm-canal-item-group:hover {
+    background: rgba(255,255,255,0.07);
+    border-color: rgba(60,172,59,0.3);
+    transform: translateY(-2px);
+  }
+  .wm-canal-item-header {
     display: flex;
     align-items: center;
-    gap: 7px;
-    background: rgba(255, 255, 255, 0.06);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 20px;
-    padding: 5px 14px 5px 7px;
-    font-size: 0.72rem;
-    font-weight: 700;
+    gap: 10px;
+    font-weight: 800;
+    font-size: 1rem;
+    margin-bottom: 14px;
+    color: #fff;
   }
-  .wm-host img {
-    width: 22px;
-    height: 15px;
-    border-radius: 3px;
-    object-fit: cover;
+  .wm-canal-logo-big {
+    width: 38px; height: 38px;
+    border-radius: 8px;
+    object-fit: contain;
+    background: #fff;
+    padding: 3px;
+    flex-shrink: 0;
+  }
+  .wm-canal-item-links { display: flex; flex-wrap: wrap; gap: 6px; }
+  .wm-canal-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 5px 12px;
+    background: rgba(60,172,59,0.08);
+    border: 1px solid rgba(60,172,59,0.25);
+    border-radius: 18px;
+    font-size: 0.75rem;
+    color: var(--mx);
+    text-decoration: none;
+    transition: all 0.2s;
+  }
+  .wm-canal-chip:hover {
+    background: var(--mx);
+    color: #000;
+    border-color: var(--mx);
+    text-decoration: none;
   }
 
-  /* ── TABS ─────────────────────────────────────── */
+  /* ── TABS ── */
   .wm-tabs {
-    display: flex !important;
-    background: #0b1520 !important;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.07) !important;
+    display: flex;
+    background: #0c0c18;
+    border-bottom: 1px solid rgba(255,255,255,0.07);
     overflow-x: auto;
     scrollbar-width: none;
     position: sticky;
     top: 0;
     z-index: 50;
   }
+  .wm-tabs::-webkit-scrollbar { display: none; }
   .wm-tab {
-    background: #0b1520 !important;
-    border: none !important;
-    border-bottom: 3px solid transparent !important;
-    border-left: 1px solid rgba(255, 255, 255, 0.07) !important;
-  }
-  .wm-tab:first-child {
-    border-left: none !important;
-  }
-  .wm-tabs::-webkit-scrollbar {
-    display: none;
-  }
-  .wm-tab {
-    padding: 14px 20px;
+    padding: 16px 24px;
     font-size: 0.72rem;
     font-weight: 800;
     text-transform: uppercase;
     letter-spacing: 1.5px;
     white-space: nowrap;
     cursor: pointer;
+    border: none;
     border-bottom: 3px solid transparent;
-    color: rgba(255, 255, 255, 0.38);
-    transition: 0.2s;
+    background: transparent;
+    color: rgba(255,255,255,0.35);
+    transition: all 0.2s;
     flex-shrink: 0;
+    font-family: inherit;
   }
-  .wm-tab.active {
-    color: var(--mx);
-    border-bottom-color: var(--mx);
-  }
-  .wm-tab:hover:not(.active) {
-    color: rgba(255, 255, 255, 0.7);
-  }
+  .wm-tab.active { color: var(--mx); border-bottom-color: var(--mx); }
+  .wm-tab:hover:not(.active) { color: rgba(255,255,255,0.7); background: rgba(255,255,255,0.03); }
 
-  /* ── PANELS ───────────────────────────────────── */
-  .wm-content {
-    padding: 20px;
-  }
-  .wm-panel {
-    display: none;
-  }
-  .wm-panel.active {
-    display: block;
-  }
+  /* ── PANELS ── */
+  .wm-content { padding: 28px 32px; }
+  .wm-panel { display: none; }
+  .wm-panel.active { display: block; }
 
-  /* ── GRUPOS ───────────────────────────────────── */
+  /* ── GRUPOS ── */
   .wm-grupos-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(195px, 1fr));
-    gap: 12px;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 14px;
   }
   .wm-grupo {
+    border-radius: 14px;
+    overflow: hidden;
     background: var(--card);
     border: 1px solid var(--border);
-    border-radius: 12px;
-    overflow: hidden;
-    transition:
-      transform 0.25s,
-      background 0.25s;
+    transition: transform 0.25s, box-shadow 0.25s;
   }
   .wm-grupo:hover {
-    transform: translateY(-4px);
-    background: rgba(255, 255, 255, 0.07);
+    transform: translateY(-6px);
+    box-shadow: 0 22px 55px rgba(0,0,0,0.55);
   }
-
   .wm-grupo-head {
-    padding: 10px 14px;
+    padding: 18px 18px 14px;
     display: flex;
-    align-items: center;
+    align-items: flex-end;
     justify-content: space-between;
-    border-bottom: 2px solid;
   }
   .wm-grupo-letra {
-    font-size: 0.72rem;
+    font-size: 0.58rem;
     font-weight: 900;
-    letter-spacing: 2px;
+    letter-spacing: 3px;
+    color: rgba(255,255,255,0.8);
+    text-transform: uppercase;
+    margin-bottom: 2px;
+  }
+  .wm-grupo-letter-big {
+    font-size: 3rem;
+    font-weight: 900;
+    line-height: 1;
+    color: #fff;
+    letter-spacing: -2px;
   }
   .wm-grupo-sede {
-    font-size: 0.58rem;
-    color: rgba(255, 255, 255, 0.35);
+    font-size: 0.56rem;
+    color: rgba(255,255,255,0.65);
     text-transform: uppercase;
     letter-spacing: 1px;
+    text-align: right;
+    line-height: 1.4;
+    max-width: 80px;
   }
 
-  .sede-mexico .wm-grupo-head {
-    background: linear-gradient(90deg, rgba(60, 172, 59, 0.15), transparent);
-    border-color: var(--mx);
-  }
-  .sede-mexico .wm-grupo-letra {
-    color: var(--mx);
-  }
-  .sede-usa .wm-grupo-head {
-    background: linear-gradient(90deg, rgba(74, 95, 212, 0.18), transparent);
-    border-color: var(--us);
-  }
-  .sede-usa .wm-grupo-letra {
-    color: var(--us);
-  }
-  .sede-canada .wm-grupo-head {
-    background: linear-gradient(90deg, rgba(230, 29, 37, 0.15), transparent);
-    border-color: var(--ca);
-  }
-  .sede-canada .wm-grupo-letra {
-    color: var(--ca);
-  }
+  .sede-mexico .wm-grupo-head { background: linear-gradient(135deg, #1a6e1a 0%, #3cac3b 100%); }
+  .sede-usa    .wm-grupo-head { background: linear-gradient(135deg, #1a2875 0%, #4a5fd4 100%); }
+  .sede-canada .wm-grupo-head { background: linear-gradient(135deg, #8a0e12 0%, #e61d25 100%); }
 
-  .wm-grupo-body {
-    padding: 4px 0 10px;
-  }
+  /* Color variation within same sede via nth-child */
+  .wm-grupos-grid .wm-grupo:nth-child(6n+2).sede-mexico .wm-grupo-head { background: linear-gradient(135deg, #2a7a2a, #5ec65e); }
+  .wm-grupos-grid .wm-grupo:nth-child(6n+3).sede-mexico .wm-grupo-head { background: linear-gradient(135deg, #3d8c00, #7ed321); }
+  .wm-grupos-grid .wm-grupo:nth-child(6n+2).sede-usa    .wm-grupo-head { background: linear-gradient(135deg, #2a1880, #7b5fef); }
+  .wm-grupos-grid .wm-grupo:nth-child(6n+3).sede-usa    .wm-grupo-head { background: linear-gradient(135deg, #00428a, #2075d4); }
+  .wm-grupos-grid .wm-grupo:nth-child(6n+2).sede-canada .wm-grupo-head { background: linear-gradient(135deg, #6b0011, #c0392b); }
+  .wm-grupos-grid .wm-grupo:nth-child(6n+3).sede-canada .wm-grupo-head { background: linear-gradient(135deg, #5a1400, #f0481b); }
+
+  .wm-grupo-body { padding: 6px 0 12px; }
   .wm-equipo {
     display: flex;
     align-items: center;
     gap: 10px;
-    padding: 6px 14px;
-    font-size: 0.83rem;
-    color: rgba(255, 255, 255, 0.88);
+    padding: 7px 16px;
+    font-size: 0.84rem;
+    color: rgba(255,255,255,0.88);
+    transition: background 0.15s;
   }
+  .wm-equipo:hover { background: rgba(255,255,255,0.04); }
   .wm-equipo img {
-    width: 22px;
-    height: 15px;
-    border-radius: 3px;
-    object-fit: cover;
-    flex-shrink: 0;
+    width: 24px; height: 16px;
+    border-radius: 3px; object-fit: cover; flex-shrink: 0;
   }
-  .wm-equipo span {
-    overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-  }
+  .wm-equipo span { overflow: hidden; white-space: nowrap; text-overflow: ellipsis; font-weight: 500; }
 
-  /* ── CALENDARIO ───────────────────────────────── */
+  /* ── CALENDARIO ── */
   .wm-fecha-label {
     font-size: 0.65rem;
     font-weight: 800;
     letter-spacing: 2px;
     color: var(--gold);
     text-transform: uppercase;
-    margin: 24px 0 10px;
+    margin: 28px 0 10px;
     display: flex;
     align-items: center;
     gap: 10px;
   }
-  .wm-fecha-label::after {
-    content: "";
-    flex: 1;
-    height: 1px;
-    background: rgba(255, 255, 255, 0.07);
-  }
+  .wm-fecha-label::after { content: ""; flex: 1; height: 1px; background: rgba(255,255,255,0.07); }
 
   .wm-partido {
     display: flex;
     align-items: center;
     gap: 12px;
     background: var(--card);
-    border: 1px solid rgba(255, 255, 255, 0.07);
+    border: 1px solid rgba(255,255,255,0.07);
     border-radius: 12px;
     padding: 14px 16px;
     margin-bottom: 8px;
     cursor: pointer;
-    transition:
-      background 0.2s,
-      border-color 0.2s;
+    transition: background 0.2s, border-color 0.2s;
     width: 100%;
     text-align: left;
     color: #fff;
     font-family: inherit;
     font-size: 1rem;
   }
-  .wm-partido:hover,
-  .wm-partido:focus-visible {
-    background: rgba(255, 255, 255, 0.08);
-    border-color: rgba(60, 172, 59, 0.35);
+  .wm-partido:hover, .wm-partido:focus-visible {
+    background: rgba(255,255,255,0.07);
+    border-color: rgba(60,172,59,0.35);
     outline: none;
   }
   .wm-partido[aria-expanded="true"] {
@@ -459,7 +475,6 @@
     border-radius: 12px 12px 0 0;
     margin-bottom: 0;
   }
-
   .wm-p-hora {
     min-width: 50px;
     font-size: 0.8rem;
@@ -468,12 +483,7 @@
     text-align: center;
     flex-shrink: 0;
   }
-  .wm-p-divider {
-    width: 1px;
-    height: 36px;
-    background: rgba(255, 255, 255, 0.1);
-    flex-shrink: 0;
-  }
+  .wm-p-divider { width: 1px; height: 36px; background: rgba(255,255,255,0.1); flex-shrink: 0; }
   .wm-p-teams {
     flex: 1;
     display: flex;
@@ -490,42 +500,13 @@
     font-weight: 600;
     min-width: 0;
   }
-  .wm-p-team.right {
-    flex-direction: row-reverse;
-  }
-  .wm-p-team img {
-    width: 22px;
-    height: 15px;
-    border-radius: 3px;
-    object-fit: cover;
-    flex-shrink: 0;
-  }
-  .wm-p-team span {
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-  .wm-p-center {
-    text-align: center;
-    flex-shrink: 0;
-  }
-  .wm-p-vs {
-    font-size: 0.65rem;
-    font-weight: 900;
-    color: rgba(255, 255, 255, 0.25);
-    letter-spacing: 1px;
-  }
-  .wm-p-score {
-    font-size: 1.1rem;
-    font-weight: 900;
-    color: var(--gold);
-    letter-spacing: 2px;
-  }
-  .wm-p-meta {
-    font-size: 0.6rem;
-    color: rgba(255, 255, 255, 0.3);
-    margin-top: 2px;
-  }
+  .wm-p-team.right { flex-direction: row-reverse; }
+  .wm-p-team img { width: 22px; height: 15px; border-radius: 3px; object-fit: cover; flex-shrink: 0; }
+  .wm-p-team span { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .wm-p-center { text-align: center; flex-shrink: 0; }
+  .wm-p-vs { font-size: 0.65rem; font-weight: 900; color: rgba(255,255,255,0.25); letter-spacing: 1px; }
+  .wm-p-score { font-size: 1.1rem; font-weight: 900; color: var(--gold); letter-spacing: 2px; }
+  .wm-p-meta { font-size: 0.6rem; color: rgba(255,255,255,0.3); margin-top: 2px; }
 
   .wm-live-badge {
     display: inline-block;
@@ -538,68 +519,39 @@
     letter-spacing: 1px;
     animation: blink 1.5s infinite;
   }
-  @keyframes blink {
-    0%,
-    100% {
-      opacity: 1;
-    }
-    50% {
-      opacity: 0.5;
-    }
-  }
+  @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.5} }
 
-  /* Panel canales */
   .wm-canales-panel {
     display: none;
     flex-wrap: wrap;
     gap: 8px;
     padding: 14px 16px;
     margin-bottom: 8px;
-    background: rgba(0, 0, 0, 0.3);
-    border: 1px solid rgba(60, 172, 59, 0.2);
+    background: rgba(0,0,0,0.3);
+    border: 1px solid rgba(60,172,59,0.2);
     border-top: none;
     border-radius: 0 0 12px 12px;
     animation: fadeIn 0.25s ease;
   }
-  .wm-canales-panel.open {
-    display: flex;
-  }
-  @keyframes fadeIn {
-    from {
-      opacity: 0;
-      transform: translateY(-4px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-
+  .wm-canales-panel.open { display: flex; }
+  @keyframes fadeIn { from{opacity:0;transform:translateY(-4px)} to{opacity:1;transform:translateY(0)} }
   .wm-canal-link {
     display: inline-flex;
     align-items: center;
     gap: 6px;
-    background: rgba(60, 172, 59, 0.1);
-    border: 1px solid rgba(60, 172, 59, 0.4);
+    background: rgba(60,172,59,0.1);
+    border: 1px solid rgba(60,172,59,0.4);
     padding: 6px 14px;
     border-radius: 20px;
     font-size: 0.78rem;
     color: #fff;
     text-decoration: none;
-    transition:
-      background 0.2s,
-      color 0.2s;
+    transition: background 0.2s;
   }
-  .wm-canal-link:hover {
-    background: var(--mx);
-    color: #000;
-  }
-  .wm-canal-empty {
-    font-size: 0.78rem;
-    color: rgba(255, 255, 255, 0.35);
-  }
+  .wm-canal-link:hover { background: var(--mx); color: #000; text-decoration: none; }
+  .wm-canal-empty { font-size: 0.78rem; color: rgba(255,255,255,0.35); }
 
-  /* ── ESTADIOS ─────────────────────────────────── */
+  /* ── ESTADIOS ── */
   .wm-estadio {
     display: flex;
     gap: 14px;
@@ -609,10 +561,11 @@
     padding: 14px;
     margin-bottom: 10px;
     align-items: center;
+    transition: background 0.2s;
   }
+  .wm-estadio:hover { background: rgba(255,255,255,0.07); }
   .wm-est-icon {
-    width: 46px;
-    height: 46px;
+    width: 46px; height: 46px;
     border-radius: 10px;
     flex-shrink: 0;
     display: flex;
@@ -620,364 +573,188 @@
     justify-content: center;
     font-size: 22px;
   }
-  .wm-est-name {
-    font-size: 0.92rem;
-    font-weight: 700;
-  }
-  .wm-est-city {
-    font-size: 0.72rem;
-    color: rgba(255, 255, 255, 0.4);
-    margin-top: 3px;
-  }
-  .wm-est-cap {
-    font-size: 0.7rem;
-    color: var(--gold);
-    margin-top: 4px;
-    font-weight: 700;
-  }
+  .wm-est-name { font-size: 0.92rem; font-weight: 700; }
+  .wm-est-city { font-size: 0.72rem; color: rgba(255,255,255,0.4); margin-top: 3px; }
+  .wm-est-cap { font-size: 0.7rem; color: var(--gold); margin-top: 4px; font-weight: 700; }
 
-  /* ── STATS ────────────────────────────────────── */
+  /* ── STATS ── */
   .wm-stats {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 10px;
+    gap: 12px;
   }
   .wm-stat {
     background: var(--card);
     border: 1px solid var(--border);
-    border-radius: 10px;
-    padding: 16px;
-    text-align: center;
-  }
-  .wm-stat-num {
-    font-size: 2rem;
-    font-weight: 900;
-    color: var(--mx);
-  }
-  .wm-stat-label {
-    font-size: 0.62rem;
-    color: rgba(255, 255, 255, 0.4);
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    margin-top: 4px;
-  }
-
-  @media (max-width: 480px) {
-    .wm-p-team span {
-      display: none;
-    }
-    .wm-stats {
-      grid-template-columns: repeat(2, 1fr);
-    }
-  }
-
-  /* ── CANALES MUNDIAL ──────────────────────────── */
-  .wm-canales-wrap {
-    padding: 24px 24px 20px;
-  }
-  .wm-section-label {
-    font-size: 0.7rem;
-    font-weight: 800;
-    letter-spacing: 2.5px;
-    color: rgba(255, 255, 255, 0.4);
-    text-transform: uppercase;
-    margin-bottom: 14px;
-  }
-  .wm-section-label i {
-    margin-right: 6px;
-    color: var(--mx);
-  }
-  .wm-canales-row {
-    display: flex;
-    gap: 14px;
-    flex-wrap: wrap;
-  }
-  .wm-canal-item {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    padding: 14px 20px;
-    background: var(--card);
-    border: 1px solid var(--border);
     border-radius: 14px;
-    text-decoration: none;
-    color: #fff;
-    transition: all 0.3s;
-    position: relative;
-    overflow: hidden;
-    min-width: 200px;
-    flex: 1;
-    max-width: 300px;
-  }
-  .wm-canal-item::before {
-    content: "";
-    position: absolute;
-    inset: -2px;
-    border-radius: 16px;
-    background: linear-gradient(135deg, var(--mx), var(--us), var(--ca));
-    background-size: 200% 200%;
-    animation: gradMove 6s ease infinite;
-    opacity: 0;
-    transition: opacity 0.3s;
-    z-index: 0;
-  }
-  .wm-canal-item:hover::before {
-    opacity: 1;
-  }
-  .wm-canal-item:hover {
-    border-color: transparent;
-    transform: translateY(-3px);
-  }
-  .wm-canal-item > * {
-    position: relative;
-    z-index: 1;
-  }
-  .wm-canal-icon {
-    width: 44px;
-    height: 44px;
-    border-radius: 10px;
-    background: #fff;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
-    overflow: hidden;
-  }
-  .wm-canal-icon img {
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
-    padding: 4px;
-  }
-  .wm-canal-icon i {
-    color: var(--mx);
-    font-size: 1.2rem;
-  }
-  .wm-canal-name {
-    font-weight: 700;
-    font-size: 0.95rem;
-    flex: 1;
-  }
-  .wm-canal-play {
-    font-size: 0.72rem;
-    font-weight: 700;
-    color: var(--mx);
-    background: rgba(60, 172, 59, 0.1);
-    padding: 4px 10px;
-    border-radius: 12px;
+    padding: 24px 16px;
+    text-align: center;
     transition: all 0.2s;
   }
-  .wm-canal-item:hover .wm-canal-play {
-    background: var(--mx);
-    color: #000;
-  }
-  .wm-canal-item-group {
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 14px;
-    padding: 16px;
-    min-width: 220px;
-    flex: 1;
-    max-width: 350px;
-    position: relative;
-    overflow: hidden;
-    transition: all 0.3s;
-  }
-  .wm-canal-item-group::before {
-    content: "";
-    position: absolute;
-    inset: -2px;
-    border-radius: 16px;
-    background: linear-gradient(135deg, var(--mx), var(--us), var(--ca));
-    background-size: 200% 200%;
-    animation: gradMove 6s ease infinite;
-    opacity: 0;
-    transition: opacity 0.3s;
-    z-index: 0;
-  }
-  .wm-canal-item-group:hover::before {
-    opacity: 1;
-  }
-  .wm-canal-item-group:hover {
-    border-color: transparent;
-    transform: translateY(-3px);
-  }
-  .wm-canal-item-group > * {
-    position: relative;
-    z-index: 1;
-  }
-  .wm-canal-item-header {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    font-weight: 800;
-    font-size: 1rem;
-    margin-bottom: 12px;
-  }
-  .wm-canal-logo-big {
-    width: 38px;
-    height: 38px;
-    border-radius: 8px;
-    object-fit: contain;
-    background: #fff;
-    padding: 3px;
-  }
-  .wm-canal-item-links {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 6px;
-  }
+  .wm-stat:hover { background: rgba(255,255,255,0.07); transform: translateY(-3px); }
+  .wm-stat-num { font-size: 2.4rem; font-weight: 900; color: var(--mx); line-height: 1; }
+  .wm-stat-label { font-size: 0.62rem; color: rgba(255,255,255,0.4); text-transform: uppercase; letter-spacing: 1px; margin-top: 6px; }
 
-  .wm-canal-chip {
-    display: inline-flex;
-    align-items: center;
-    gap: 4px;
-    padding: 5px 12px;
-    background: rgba(60, 172, 59, 0.08);
-    border: 1px solid rgba(60, 172, 59, 0.25);
-    border-radius: 18px;
-    font-size: 0.75rem;
-    color: var(--mx);
-    text-decoration: none;
-    transition: all 0.3s;
+  /* ── RESPONSIVE ── */
+  @media (max-width: 768px) {
+    .wm-hero { min-height: 420px; }
+    .wm-hero-content { padding: 32px 20px 28px; max-width: 100%; }
+    .wm-blobs { width: 100%; opacity: 0.28; }
+    .wm-section-header { padding: 22px 16px 10px; flex-wrap: wrap; gap: 4px; }
+    .wm-section-title { font-size: 1.05rem; }
+    .wm-canales-wrap { padding: 0 16px 20px; }
+    .wm-canales-row { flex-direction: column; }
+    .wm-canal-item-group { min-width: unset; max-width: 100%; }
+    .wm-content { padding: 16px; }
+    .wm-stats { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+    .wm-tab { padding: 12px 16px; font-size: 0.68rem; }
+    .wm-btn-primary, .wm-btn-outline { padding: 11px 18px; font-size: 0.75rem; }
+    .wm-cd { min-width: 56px; padding: 10px 12px; }
+    .wm-cd-num { font-size: 1.5rem; }
+    .wm-grupos-grid { grid-template-columns: repeat(2, 1fr); }
+    .wm-partido { padding: 12px 14px; gap: 10px; }
   }
-  .wm-canal-chip:hover {
-    background: linear-gradient(135deg, var(--mx), var(--us), var(--ca));
-    background-size: 200% 200%;
-    animation: gradMove 3s ease infinite;
-    color: #fff;
-    transform: scale(1.05);
-    border-color: transparent;
+  @media (max-width: 480px) {
+    .wm-hero { min-height: 360px; }
+    .wm-hero-content { padding: 24px 16px 24px; }
+    .wm-blobs { opacity: 0.18; }
+    .wm-eyebrow { font-size: 0.55rem; letter-spacing: 2.5px; }
+    .wm-hero-title { letter-spacing: -2px; }
+    .wm-hero-dates { font-size: 0.75rem; letter-spacing: 1px; }
+    .wm-hero-hosts { font-size: 0.72rem; gap: 6px; }
+    .wm-countdown { gap: 5px; margin-top: 18px; }
+    .wm-cd { min-width: 48px; padding: 8px 10px; }
+    .wm-cd-num { font-size: 1.25rem; }
+    .wm-cd-sep { font-size: 1.1rem; }
+    .wm-hero-ctas { flex-direction: column; margin-top: 20px; gap: 8px; }
+    .wm-btn-primary, .wm-btn-outline { width: 100%; justify-content: center; padding: 12px 16px; }
+    .wm-grupos-grid { grid-template-columns: repeat(2, 1fr); gap: 8px; }
+    .wm-grupo-head { padding: 14px 14px 10px; }
+    .wm-grupo-letter-big { font-size: 2.2rem; }
+    .wm-grupo-sede { font-size: 0.5rem; max-width: 60px; }
+    .wm-stats { grid-template-columns: repeat(2, 1fr); gap: 8px; }
+    .wm-stat { padding: 18px 12px; }
+    .wm-stat-num { font-size: 2rem; }
+    .wm-p-team span { display: none; }
+    .wm-p-hora { min-width: 40px; font-size: 0.72rem; }
+    .wm-p-teams { gap: 4px; }
+    .wm-fecha-label { font-size: 0.6rem; margin: 20px 0 8px; }
+    .wm-canal-chip { font-size: 0.7rem; padding: 5px 10px; }
   }
 </style>
 
 <div class="wm">
-  <!-- HERO -->
+
+  <!-- ── HERO ── -->
   <div class="wm-hero">
-    <div class="wm-hero-bg"></div>
-    <div class="wm-hero-inner">
-      <img
-        src="{% static 'img/mundial2026.png' %}"
-        alt="FIFA World Cup 2026"
-        style="
-          width: 180px;
-          max-width: 55%;
-          margin-bottom: 16px;
-          filter: drop-shadow(0 0 12px rgba(255, 255, 255, 0.1));
-        "
-      />
-      <h1 class="wm-title">26</h1>
-      <p class="wm-subtitle">11 Junio — 19 Julio 2026</p>
+    <div class="wm-blobs">
+      <div class="wm-blob wm-blob-1"></div>
+      <div class="wm-blob wm-blob-2"></div>
+      <div class="wm-blob wm-blob-3"></div>
+      <div class="wm-blob wm-blob-4"></div>
+      <div class="wm-blob wm-blob-5"></div>
+      <div class="wm-blobs-overlay"></div>
+    </div>
+
+    <div class="wm-hero-content">
+      <div class="wm-eyebrow">Copa Mundial de la FIFA</div>
+
+      <h1 class="wm-hero-title">
+        Mundial
+        <span class="year">2026<span class="tm">™</span></span>
+      </h1>
+
+      <div class="wm-hero-dates">11 Junio — 19 Julio 2026</div>
+
+      <div class="wm-hero-hosts">
+        <span class="wm-host-dot" style="background:#4a5fd4"></span>
+        Estados Unidos
+        <span class="wm-host-sep">•</span>
+        <span class="wm-host-dot" style="background:#e61d25"></span>
+        Canadá
+        <span class="wm-host-sep">•</span>
+        <span class="wm-host-dot" style="background:#3cac3b"></span>
+        México
+      </div>
 
       <div class="wm-countdown" id="wm-cd"></div>
 
-      <div class="wm-hosts">
-        <div class="wm-host">
-          <img src="https://flagcdn.com/22x15/mx.png" alt="México" />
-          <span>México</span>
-        </div>
-        <div class="wm-host">
-          <img src="https://flagcdn.com/22x15/ca.png" alt="Canadá" />
-          <span>Canadá</span>
-        </div>
-        <div class="wm-host">
-          <img src="https://flagcdn.com/22x15/us.png" alt="USA" />
-          <span>Estados Unidos</span>
-        </div>
+      <div class="wm-hero-ctas">
+        <button class="wm-btn-primary" onclick="goToTab('calendario')">
+          <i class="bi bi-calendar3"></i> Ver Calendario
+        </button>
+        <button class="wm-btn-outline" onclick="goToTab('grupos')">
+          <i class="bi bi-grid-3x3-gap-fill"></i> Ver Grupos
+        </button>
       </div>
     </div>
   </div>
 
-  <!-- CANALES QUE TRANSMITEN -->
-  <!-- CANALES QUE TRANSMITEN -->
+  <!-- ── CANALES QUE TRANSMITEN ── -->
   {% if canales_mundial %}
-  <div class="wm-canales-wrap">
-    <h3 class="wm-section-label">
-      <i class="bi bi-tv-fill"></i> Donde Ver el Mundial
-    </h3>
-    <div class="wm-canales-row">
-      {% for nombre, data in canales_mundial.items %}
-      <div class="wm-canal-item-group">
-        <div class="wm-canal-item-header">
-          {% if data.canal.logo %}
-          <img
-            src="{{ data.canal.logo.url }}"
-            alt="{{ nombre }}"
-            class="wm-canal-logo-big"
-          />
-          {% endif %}
-          <span>{{ nombre }}</span>
+  <div>
+    <div class="wm-section-header">
+      <div class="wm-section-title">Donde Ver el Mundial</div>
+      <div class="wm-section-sub"><i class="bi bi-tv-fill" style="color:var(--mx)"></i> Canales disponibles</div>
+    </div>
+    <div class="wm-canales-wrap">
+      <div class="wm-canales-row">
+        {% for nombre, data in canales_mundial.items %}
+        <div class="wm-canal-item-group">
+          <div class="wm-canal-item-header">
+            {% if data.canal.logo %}
+            <img src="{{ data.canal.logo.url }}" alt="{{ nombre }}" class="wm-canal-logo-big" />
+            {% endif %}
+            <span>{{ nombre }}</span>
+          </div>
+          <div class="wm-canal-item-links">
+            {% for video in data.videos %}
+            <a href="{% url 'canales:detalle_video' video.pk %}" class="wm-canal-chip">
+              <i class="bi bi-play-fill"></i> {{ video.titulo }}
+            </a>
+            {% endfor %}
+          </div>
         </div>
-        <div class="wm-canal-item-links">
-          {% for video in data.videos %}
-          <a
-            href="{% url 'canales:detalle_video' video.pk %}"
-            class="wm-canal-chip"
-          >
-            <i class="bi bi-play-fill"></i> {{ video.titulo }}
-          </a>
-          {% endfor %}
-        </div>
+        {% endfor %}
       </div>
-      {% endfor %}
     </div>
   </div>
   {% endif %}
 
-  <!-- TABS -->
+  <!-- ── TABS ── -->
   <nav class="wm-tabs" role="tablist">
-    <button
-      class="wm-tab active"
-      role="tab"
-      aria-selected="true"
-      onclick="wmTab('grupos', this)"
-    >
+    <button class="wm-tab active" role="tab" aria-selected="true" onclick="wmTab('grupos', this)">
       Grupos
     </button>
-    <button
-      class="wm-tab"
-      role="tab"
-      aria-selected="false"
-      onclick="wmTab('calendario', this)"
-    >
+    <button class="wm-tab" role="tab" aria-selected="false" onclick="wmTab('calendario', this)">
       Calendario
     </button>
-    <button
-      class="wm-tab"
-      role="tab"
-      aria-selected="false"
-      onclick="wmTab('estadios', this)"
-    >
+    <button class="wm-tab" role="tab" aria-selected="false" onclick="wmTab('estadios', this)">
       Estadios
     </button>
-    <button
-      class="wm-tab"
-      role="tab"
-      aria-selected="false"
-      onclick="wmTab('datos', this)"
-    >
+    <button class="wm-tab" role="tab" aria-selected="false" onclick="wmTab('datos', this)">
       Datos
     </button>
   </nav>
 
   <div class="wm-content">
+
     <!-- PANEL: GRUPOS -->
     <div class="wm-panel active" id="wm-panel-grupos" role="tabpanel">
       <div class="wm-grupos-grid">
         {% for letra, info in grupos.items %}
         <div class="wm-grupo sede-{{ info.sede }}">
           <div class="wm-grupo-head">
-            <span class="wm-grupo-letra">GRUPO {{ letra }}</span>
-            <span class="wm-grupo-sede">{{ info.sede_label }}</span>
+            <div>
+              <div class="wm-grupo-letra">Grupo</div>
+              <div class="wm-grupo-letter-big">{{ letra }}</div>
+            </div>
+            <div class="wm-grupo-sede">{{ info.sede_label }}</div>
           </div>
           <div class="wm-grupo-body">
             {% for equipo, code in info.equipos %}
             <div class="wm-equipo">
-              <img
-                src="https://flagcdn.com/22x15/{{ code }}.png"
-                alt="{{ equipo }}"
-                onerror="this.style.display = 'none'"
-              />
+              <img src="https://flagcdn.com/22x15/{{ code }}.png" alt="{{ equipo }}" onerror="this.style.display='none'" />
               <span>{{ equipo }}</span>
             </div>
             {% endfor %}
@@ -990,52 +767,30 @@
     <!-- PANEL: CALENDARIO -->
     <div class="wm-panel" id="wm-panel-calendario" role="tabpanel">
       {% for fecha, partidos in fechas_partidos.items %}
-
       <p class="wm-fecha-label">
         <i class="bi bi-calendar-event"></i>
         {{ fecha|date:"l, d \d\e F" }}
       </p>
-
       {% for partido in partidos %}
-
-      <button
-        class="wm-partido"
-        aria-expanded="false"
-        onclick="wmToggleCanales(this)"
-      >
+      <button class="wm-partido" aria-expanded="false" onclick="wmToggleCanales(this)">
         <div class="wm-p-hora">
-          {{ partido.hora|time:'H:i' }} {% if partido.estado == 'LIVE' %}
-          <br /><span class="wm-live-badge">EN VIVO</span>
-          {% endif %} {% if partido.estado == '1H' %}
-          <br /><span class="wm-live-badge">EN VIVO</span>
-          {% endif %} {% if partido.estado == '2H' %}
-          <br /><span class="wm-live-badge">EN VIVO</span>
-          {% endif %} {% if partido.estado == 'HT' %}
-          <br /><span class="wm-live-badge">ET</span>
-          {% endif %}
+          {{ partido.hora|time:'H:i' }}
+          {% if partido.estado == 'LIVE' %}<br /><span class="wm-live-badge">EN VIVO</span>{% endif %}
+          {% if partido.estado == '1H' %}<br /><span class="wm-live-badge">EN VIVO</span>{% endif %}
+          {% if partido.estado == '2H' %}<br /><span class="wm-live-badge">EN VIVO</span>{% endif %}
+          {% if partido.estado == 'HT' %}<br /><span class="wm-live-badge">ET</span>{% endif %}
         </div>
         <div class="wm-p-divider"></div>
         <div class="wm-p-teams">
           <div class="wm-p-team">
             {% if partido.equipo_local_logo %}
-            <img
-              src="{{ partido.equipo_local_logo }}"
-              alt="{{ partido.equipo_local }}"
-              style="
-                width: 22px;
-                height: 15px;
-                border-radius: 3px;
-                object-fit: cover;
-              "
-            />
+            <img src="{{ partido.equipo_local_logo }}" alt="{{ partido.equipo_local }}" style="width:22px;height:15px;border-radius:3px;object-fit:cover;" />
             {% endif %}
             <span>{{ partido.equipo_local }}</span>
           </div>
           <div class="wm-p-center">
             {% if partido.goles_local != None %}
-            <div class="wm-p-score">
-              {{ partido.goles_local }} — {{ partido.goles_visitante }}
-            </div>
+            <div class="wm-p-score">{{ partido.goles_local }} — {{ partido.goles_visitante }}</div>
             {% else %}
             <div class="wm-p-vs">VS</div>
             {% endif %}
@@ -1044,40 +799,23 @@
           <div class="wm-p-team right">
             <span>{{ partido.equipo_visitante }}</span>
             {% if partido.equipo_visitante_logo %}
-            <img
-              src="{{ partido.equipo_visitante_logo }}"
-              alt="{{ partido.equipo_visitante }}"
-              style="
-                width: 22px;
-                height: 15px;
-                border-radius: 3px;
-                object-fit: cover;
-              "
-            />
+            <img src="{{ partido.equipo_visitante_logo }}" alt="{{ partido.equipo_visitante }}" style="width:22px;height:15px;border-radius:3px;object-fit:cover;" />
             {% endif %}
           </div>
         </div>
       </button>
-
       <div class="wm-canales-panel">
         {% for video in partido.canales_transmision %}
-        <a
-          href="{{ video.url_video }}"
-          class="wm-canal-link"
-          target="_blank"
-          rel="noopener"
-        >
+        <a href="{% url 'canales:detalle_video' video.pk %}" class="wm-canal-link">
           <i class="bi bi-play-fill"></i> {{ video.titulo }}
         </a>
         {% empty %}
         <span class="wm-canal-empty">Sin señal disponible aún</span>
         {% endfor %}
       </div>
-
-      {% endfor %} {% empty %}
-      <p style="color: rgba(255, 255, 255, 0.4); margin-top: 20px">
-        No hay partidos programados.
-      </p>
+      {% endfor %}
+      {% empty %}
+      <p style="color:rgba(255,255,255,0.4);margin-top:20px">No hay partidos programados.</p>
       {% endfor %}
     </div>
 
@@ -1085,9 +823,7 @@
     <div class="wm-panel" id="wm-panel-estadios" role="tabpanel">
       {% for est in estadios %}
       <div class="wm-estadio">
-        <div class="wm-est-icon" style="background: rgba(60, 172, 59, 0.12)">
-          🏟️
-        </div>
+        <div class="wm-est-icon" style="background:rgba(60,172,59,0.12)">🏟️</div>
         <div>
           <div class="wm-est-name">{{ est.nombre }}</div>
           <div class="wm-est-city">{{ est.ciudad }}</div>
@@ -1096,9 +832,7 @@
       </div>
       {% empty %}
       <div class="wm-estadio">
-        <div class="wm-est-icon" style="background: rgba(60, 172, 59, 0.12)">
-          🏟️
-        </div>
+        <div class="wm-est-icon" style="background:rgba(60,172,59,0.12)">🏟️</div>
         <div>
           <div class="wm-est-name">Estadio Azteca</div>
           <div class="wm-est-city">Ciudad de México, México</div>
@@ -1106,9 +840,7 @@
         </div>
       </div>
       <div class="wm-estadio">
-        <div class="wm-est-icon" style="background: rgba(60, 172, 59, 0.12)">
-          🏟️
-        </div>
+        <div class="wm-est-icon" style="background:rgba(60,172,59,0.12)">🏟️</div>
         <div>
           <div class="wm-est-name">Estadio Guadalajara</div>
           <div class="wm-est-city">Guadalajara, México</div>
@@ -1116,9 +848,7 @@
         </div>
       </div>
       <div class="wm-estadio">
-        <div class="wm-est-icon" style="background: rgba(60, 172, 59, 0.12)">
-          🏟️
-        </div>
+        <div class="wm-est-icon" style="background:rgba(60,172,59,0.12)">🏟️</div>
         <div>
           <div class="wm-est-name">Estadio Monterrey</div>
           <div class="wm-est-city">Monterrey, México</div>
@@ -1126,9 +856,7 @@
         </div>
       </div>
       <div class="wm-estadio">
-        <div class="wm-est-icon" style="background: rgba(42, 57, 141, 0.2)">
-          🏟️
-        </div>
+        <div class="wm-est-icon" style="background:rgba(42,57,141,0.2)">🏟️</div>
         <div>
           <div class="wm-est-name">MetLife Stadium</div>
           <div class="wm-est-city">Nueva York, USA — FINAL</div>
@@ -1136,9 +864,7 @@
         </div>
       </div>
       <div class="wm-estadio">
-        <div class="wm-est-icon" style="background: rgba(42, 57, 141, 0.2)">
-          🏟️
-        </div>
+        <div class="wm-est-icon" style="background:rgba(42,57,141,0.2)">🏟️</div>
         <div>
           <div class="wm-est-name">SoFi Stadium</div>
           <div class="wm-est-city">Los Ángeles, USA</div>
@@ -1146,9 +872,7 @@
         </div>
       </div>
       <div class="wm-estadio">
-        <div class="wm-est-icon" style="background: rgba(42, 57, 141, 0.2)">
-          🏟️
-        </div>
+        <div class="wm-est-icon" style="background:rgba(42,57,141,0.2)">🏟️</div>
         <div>
           <div class="wm-est-name">AT&T Stadium</div>
           <div class="wm-est-city">Dallas, USA</div>
@@ -1156,9 +880,7 @@
         </div>
       </div>
       <div class="wm-estadio">
-        <div class="wm-est-icon" style="background: rgba(42, 57, 141, 0.2)">
-          🏟️
-        </div>
+        <div class="wm-est-icon" style="background:rgba(42,57,141,0.2)">🏟️</div>
         <div>
           <div class="wm-est-name">Levi's Stadium</div>
           <div class="wm-est-city">San Francisco, USA</div>
@@ -1166,9 +888,7 @@
         </div>
       </div>
       <div class="wm-estadio">
-        <div class="wm-est-icon" style="background: rgba(42, 57, 141, 0.2)">
-          🏟️
-        </div>
+        <div class="wm-est-icon" style="background:rgba(42,57,141,0.2)">🏟️</div>
         <div>
           <div class="wm-est-name">Arrowhead Stadium</div>
           <div class="wm-est-city">Kansas City, USA</div>
@@ -1176,9 +896,7 @@
         </div>
       </div>
       <div class="wm-estadio">
-        <div class="wm-est-icon" style="background: rgba(42, 57, 141, 0.2)">
-          🏟️
-        </div>
+        <div class="wm-est-icon" style="background:rgba(42,57,141,0.2)">🏟️</div>
         <div>
           <div class="wm-est-name">Gillette Stadium</div>
           <div class="wm-est-city">Boston, USA</div>
@@ -1186,9 +904,7 @@
         </div>
       </div>
       <div class="wm-estadio">
-        <div class="wm-est-icon" style="background: rgba(42, 57, 141, 0.2)">
-          🏟️
-        </div>
+        <div class="wm-est-icon" style="background:rgba(42,57,141,0.2)">🏟️</div>
         <div>
           <div class="wm-est-name">NRG Stadium</div>
           <div class="wm-est-city">Houston, USA</div>
@@ -1196,9 +912,7 @@
         </div>
       </div>
       <div class="wm-estadio">
-        <div class="wm-est-icon" style="background: rgba(42, 57, 141, 0.2)">
-          🏟️
-        </div>
+        <div class="wm-est-icon" style="background:rgba(42,57,141,0.2)">🏟️</div>
         <div>
           <div class="wm-est-name">Hard Rock Stadium</div>
           <div class="wm-est-city">Miami, USA</div>
@@ -1206,9 +920,7 @@
         </div>
       </div>
       <div class="wm-estadio">
-        <div class="wm-est-icon" style="background: rgba(230, 29, 37, 0.15)">
-          🏟️
-        </div>
+        <div class="wm-est-icon" style="background:rgba(230,29,37,0.15)">🏟️</div>
         <div>
           <div class="wm-est-name">BC Place</div>
           <div class="wm-est-city">Vancouver, Canadá</div>
@@ -1216,9 +928,7 @@
         </div>
       </div>
       <div class="wm-estadio">
-        <div class="wm-est-icon" style="background: rgba(230, 29, 37, 0.15)">
-          🏟️
-        </div>
+        <div class="wm-est-icon" style="background:rgba(230,29,37,0.15)">🏟️</div>
         <div>
           <div class="wm-est-name">BMO Field</div>
           <div class="wm-est-city">Toronto, Canadá</div>
@@ -1226,9 +936,7 @@
         </div>
       </div>
       <div class="wm-estadio">
-        <div class="wm-est-icon" style="background: rgba(230, 29, 37, 0.15)">
-          🏟️
-        </div>
+        <div class="wm-est-icon" style="background:rgba(230,29,37,0.15)">🏟️</div>
         <div>
           <div class="wm-est-name">Stade Olympique</div>
           <div class="wm-est-city">Montreal, Canadá</div>
@@ -1267,73 +975,72 @@
         </div>
       </div>
     </div>
+
   </div>
-  <!-- /wm-content -->
 </div>
-<!-- /wm -->
 
 <script>
-  /* ── TABS ────────────────────────────────────── */
+  /* ── TABS ── */
   function wmTab(id, el) {
-    document
-      .querySelectorAll(".wm-panel")
-      .forEach((p) => p.classList.remove("active"));
-    document.querySelectorAll(".wm-tab").forEach((t) => {
-      t.classList.remove("active");
-      t.setAttribute("aria-selected", "false");
+    document.querySelectorAll('.wm-panel').forEach(function(p) { p.classList.remove('active'); });
+    document.querySelectorAll('.wm-tab').forEach(function(t) {
+      t.classList.remove('active');
+      t.setAttribute('aria-selected', 'false');
     });
-    document.getElementById("wm-panel-" + id).classList.add("active");
-    el.classList.add("active");
-    el.setAttribute("aria-selected", "true");
+    document.getElementById('wm-panel-' + id).classList.add('active');
+    el.classList.add('active');
+    el.setAttribute('aria-selected', 'true');
   }
 
-  /* ── CANALES ─────────────────────────────────── */
-  function wmToggleCanales(btn) {
-    const panel = btn.nextElementSibling;
-    if (!panel || !panel.classList.contains("wm-canales-panel")) return;
-
-    const isOpen = panel.classList.contains("open");
-
-    // Cerrar todos
-    document.querySelectorAll(".wm-canales-panel.open").forEach((p) => {
-      p.classList.remove("open");
-      p.previousElementSibling?.setAttribute("aria-expanded", "false");
-    });
-
-    if (!isOpen) {
-      panel.classList.add("open");
-      btn.setAttribute("aria-expanded", "true");
-      // Scroll suave al partido
-      btn.scrollIntoView({ behavior: "smooth", block: "nearest" });
+  function goToTab(id) {
+    var ids = ['grupos', 'calendario', 'estadios', 'datos'];
+    var idx = ids.indexOf(id);
+    var tabs = document.querySelectorAll('.wm-tab');
+    if (idx >= 0 && tabs[idx]) {
+      wmTab(id, tabs[idx]);
+      document.querySelector('.wm-tabs').scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
   }
 
-  /* ── COUNTDOWN ───────────────────────────────── */
-  function wmCountdown() {
-    const target = new Date("2026-06-11T14:00:00");
-    const diff = target - new Date();
-    const cd = document.getElementById("wm-cd");
-    if (!cd) return;
+  /* ── CANALES ── */
+  function wmToggleCanales(btn) {
+    var panel = btn.nextElementSibling;
+    if (!panel || !panel.classList.contains('wm-canales-panel')) return;
+    var isOpen = panel.classList.contains('open');
+    document.querySelectorAll('.wm-canales-panel.open').forEach(function(p) {
+      p.classList.remove('open');
+      if (p.previousElementSibling) p.previousElementSibling.setAttribute('aria-expanded', 'false');
+    });
+    if (!isOpen) {
+      panel.classList.add('open');
+      btn.setAttribute('aria-expanded', 'true');
+      btn.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+  }
 
+  /* ── COUNTDOWN ── */
+  function wmCountdown() {
+    var target = new Date('2026-06-11T14:00:00');
+    var diff = target - new Date();
+    var cd = document.getElementById('wm-cd');
+    if (!cd) return;
     if (diff <= 0) {
-      cd.innerHTML =
-        '<div class="wm-cd"><div class="wm-cd-num" style="color:var(--ca)">¡VIVO!</div></div>';
+      cd.innerHTML = '<div class="wm-cd"><div class="wm-cd-num" style="color:var(--ca)">¡VIVO!</div></div>';
       return;
     }
-    const d = Math.floor(diff / 864e5);
-    const h = Math.floor((diff % 864e5) / 36e5);
-    const m = Math.floor((diff % 36e5) / 6e4);
-    const s = Math.floor((diff % 6e4) / 1e3);
-    const pad = (n) => String(n).padStart(2, "0");
-
-    cd.innerHTML = `
-      <div class="wm-cd"><div class="wm-cd-num">${d}</div><div class="wm-cd-label">días</div></div>
-      <div class="wm-cd-sep">:</div>
-      <div class="wm-cd"><div class="wm-cd-num">${pad(h)}</div><div class="wm-cd-label">horas</div></div>
-      <div class="wm-cd-sep">:</div>
-      <div class="wm-cd"><div class="wm-cd-num">${pad(m)}</div><div class="wm-cd-label">min</div></div>
-      <div class="wm-cd-sep">:</div>
-      <div class="wm-cd"><div class="wm-cd-num">${pad(s)}</div><div class="wm-cd-label">seg</div></div>`;
+    var d = Math.floor(diff / 864e5);
+    var h = Math.floor((diff % 864e5) / 36e5);
+    var m = Math.floor((diff % 36e5) / 6e4);
+    var s = Math.floor((diff % 6e4) / 1e3);
+    var pad = function(n) { return String(n).padStart(2, '0'); };
+    cd.innerHTML =
+      '<div class="wm-cd"><div class="wm-cd-num">' + d + '</div><div class="wm-cd-label">días</div></div>' +
+      '<div class="wm-cd-sep">:</div>' +
+      '<div class="wm-cd"><div class="wm-cd-num">' + pad(h) + '</div><div class="wm-cd-label">horas</div></div>' +
+      '<div class="wm-cd-sep">:</div>' +
+      '<div class="wm-cd"><div class="wm-cd-num">' + pad(m) + '</div><div class="wm-cd-label">min</div></div>' +
+      '<div class="wm-cd-sep">:</div>' +
+      '<div class="wm-cd"><div class="wm-cd-num">' + pad(s) + '</div><div class="wm-cd-label">seg</div></div>';
   }
 
   wmCountdown();
